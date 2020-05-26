@@ -9,6 +9,35 @@
     <packaging>jar</packaging>
     <name>Ca 3 S Acme Proxy</name>
 
+	<licenses>
+		<license>
+			<name>European Union Public Licence (EUPL-1.2)</name>
+			<url>https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Andreas Kuehne</name>
+			<email>kuehne@trustable.de</email>
+			<organization>trustable solutions UG</organization>
+			<organizationUrl>https://trustable.de</organizationUrl>
+		</developer>
+		<developer>
+			<name>Damian Wabisch</name>
+			<email>damian@trustable.de</email>
+			<organization>trustable solutions UG</organization>
+			<organizationUrl>https://trustable.de</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>https://github.com/kuehne-trustable-de/acmeProxy.git</connection>
+		<developerConnection>https://github.com/kuehne-trustable-de/acmeProxy.git</developerConnection>
+		<url>https://github.com/kuehne-trustable-de/acmeProxy.git</url>
+	</scm>
+
+
     <repositories>
         <!-- jhipster-needle-maven-repository -->
     </repositories>
@@ -72,6 +101,11 @@
         <!-- jhipster-needle-maven-property -->
         
         <webSocketDTOVersion>0.0.1-SNAPSHOT</webSocketDTOVersion>
+        
+        <dependencyCheck.version>5.3.1</dependencyCheck.version>
+        <dependencyCheck.skip>true</dependencyCheck.skip>
+        
+        <gpg.keyname>5F46A2C0A82BD58E</gpg.keyname>
         
     </properties>
 
@@ -722,6 +756,42 @@
 
                 </plugin>
                 <!-- jhipster-needle-maven-add-plugin-management -->
+                
+				<plugin>
+					<groupId>org.owasp</groupId>
+					<artifactId>dependency-check-maven</artifactId>
+					<version>${dependencyCheck.version}</version>
+					<configuration>
+						<cveValidForHours>12</cveValidForHours>
+						<failBuildOnCVSS>4</failBuildOnCVSS>
+						<outputDirectory>${project.build.directory}/dependency-check</outputDirectory>
+						<format>HTML</format>
+						<skip>${dependencyCheck.skip}</skip>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>2.0.0</version>
+					<executions>
+						<execution>
+							<id>download-licenses</id>
+							<goals>
+								<goal>download-licenses</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+	      
+                
             </plugins>
         </pluginManagement>
     </build>
