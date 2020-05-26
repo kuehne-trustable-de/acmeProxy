@@ -1,4 +1,7 @@
 # ca3sAcmeProxy
+#
+# remote proxy to support the ACME protocol over separated network segments
+#
 
 This application was generated using JHipster 6.9.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.9.0](https://www.jhipster.tech/documentation-archive/v6.9.0).
 

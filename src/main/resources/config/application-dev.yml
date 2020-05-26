@@ -59,7 +59,7 @@ spring:
     enabled: false
     locator:
       discovery:
-        enabled: true
+        enabled: false
 
 server:
   port: 8085
