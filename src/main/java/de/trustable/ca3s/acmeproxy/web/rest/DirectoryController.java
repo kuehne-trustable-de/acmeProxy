@@ -27,6 +27,7 @@
 package de.trustable.ca3s.acmeproxy.web.rest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -39,7 +40,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import de.trustable.ca3s.acmeproxy.dto.AcmeRequestContainer;
-
+import de.trustable.ca3s.acmeproxy.service.dto.DirectoryResponse;
 /*
  * 7.1.1.  Directory
 
@@ -142,9 +143,11 @@ public class DirectoryController extends ACMEController {
 	  
 		AcmeRequestContainer arc = new AcmeRequestContainer("directory-get", realm);
 
+//		DirectoryResponse resp = new DirectoryResponse();
+
 		ResponseEntity<?> re = wsUtil.send(arc);
+		
 		return re;
 
   }
-
 }
