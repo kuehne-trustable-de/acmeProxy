@@ -3,7 +3,7 @@
     "promptValues": {
       "packageName": "de.trustable.ca3s.acmeproxy"
     },
-    "jhipsterVersion": "6.7.1",
+    "jhipsterVersion": "6.10.5",
     "applicationType": "microservice",
     "baseName": "ca3sAcmeProxy",
     "packageName": "de.trustable.ca3s.acmeproxy",
