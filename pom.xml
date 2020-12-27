@@ -65,17 +65,19 @@
         <profile.swagger />
         <profile.tls />
 
+
         <!-- Dependency versions -->
         <jhipster-dependencies.version>3.7.1</jhipster-dependencies.version>
         <!-- The spring-boot version should match the one managed by
         https://mvnrepository.com/artifact/io.github.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
         <spring-boot.version>2.2.7.RELEASE</spring-boot.version>
+
         <archunit-junit5.version>0.13.1</archunit-junit5.version>
         <mapstruct.version>1.3.1.Final</mapstruct.version>
         <!-- Plugin versions -->
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
         <maven-failsafe-plugin.version>3.0.0-M4</maven-failsafe-plugin.version>
@@ -83,12 +85,12 @@
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
         <maven-war-plugin.version>3.2.3</maven-war-plugin.version>
-        <maven-checkstyle.version>3.1.1</maven-checkstyle.version>
-        <checkstyle.version>8.32</checkstyle.version>
+        <maven-checkstyle.version>3.1.0</maven-checkstyle.version>
+        <checkstyle.version>8.29</checkstyle.version>
         <spring-nohttp-checkstyle.version>0.0.4.RELEASE</spring-nohttp-checkstyle.version>
         <git-commit-id-plugin.version>4.0.0</git-commit-id-plugin.version>
         <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
-        <jib-maven-plugin.version>2.2.0</jib-maven-plugin.version>
+        <jib-maven-plugin.version>2.0.0</jib-maven-plugin.version>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
@@ -99,14 +101,14 @@
         <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <!-- jhipster-needle-maven-property -->
-        
+
         <webSocketDTOVersion>0.0.1-SNAPSHOT</webSocketDTOVersion>
-        
+
         <dependencyCheck.version>5.3.1</dependencyCheck.version>
         <dependencyCheck.skip>true</dependencyCheck.skip>
-        
+
         <gpg.keyname>5F46A2C0A82BD58E</gpg.keyname>
-        
+
     </properties>
 
     <dependencyManagement>
@@ -143,6 +145,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-afterburner</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -314,14 +321,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
-        
+
         <dependency>
 			<groupId>de.trustable.ca3s</groupId>
 			<artifactId>ca3sWebSocketDTO</artifactId>
 			<version>${webSocketDTOVersion}</version>
 		</dependency>
 
-        
+
     </dependencies>
 
     <build>
@@ -761,7 +768,7 @@
 
                 </plugin>
                 <!-- jhipster-needle-maven-add-plugin-management -->
-                
+
 				<plugin>
 					<groupId>org.owasp</groupId>
 					<artifactId>dependency-check-maven</artifactId>
@@ -781,7 +788,7 @@
 						</execution>
 					</executions>
 				</plugin>
-			
+
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>license-maven-plugin</artifactId>
@@ -795,8 +802,8 @@
 						</execution>
 					</executions>
 				</plugin>
-	      
-                
+
+
             </plugins>
         </pluginManagement>
     </build>
