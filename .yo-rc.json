@@ -1,0 +1,38 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "de.trustable.ca3s.acmeproxy"
+    },
+    "jhipsterVersion": "6.7.1",
+    "applicationType": "microservice",
+    "baseName": "ca3sAcmeProxy",
+    "packageName": "de.trustable.ca3s.acmeproxy",
+    "packageFolder": "de/trustable/ca3s/acmeproxy",
+    "serverPort": "8085",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "enableHibernateCache": false,
+    "websocket": false,
+    "databaseType": "no",
+    "devDatabaseType": "no",
+    "prodDatabaseType": "no",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": "eureka",
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "Yzg4YWZkN2NhMzcxOWUyOTFkMzM1M2M3MGEwNGY5MTdmM2RlZjQ1OTJjNzBhZDIwZjU0MzU3YTExOGEzMWY0M2E1ZWFlNDRjNjM1ZDFhNWUxYTk5MjhmM2Y2OGI5MDA2NWY0ZWQ0NmNiMmUxNmQ1MjU5YWQyMzE0MjA2YTliNTY=",
+    "embeddableLaunchScript": false,
+    "creationTimestamp": 1582827637426,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "clientPackageManager": "npm",
+    "blueprints": [],
+    "skipClient": true,
+    "skipUserManagement": true
+  }
+}
