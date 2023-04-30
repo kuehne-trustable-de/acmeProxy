@@ -18,13 +18,18 @@ logging:
     ROOT: DEBUG
     io.github.jhipster: DEBUG
     de.trustable.ca3s.acmeproxy: DEBUG
+    org:
+      apache:
+        http: INFO
+    httpclient:
+      wire: INFO
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    service-url:
+#      defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
 
 spring:
   profiles:
@@ -111,3 +116,12 @@ jhipster:
 # ===================================================================
 
 # application:
+acme:
+  proxy:
+    connection:
+      secret: FooFooFoo
+    remote:
+      server: http://localhost:9090
+    local:
+      server: http://localhost:${server.port}
+    id: 1

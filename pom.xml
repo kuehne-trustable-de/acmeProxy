@@ -66,6 +66,8 @@
         <profile.tls />
 
 
+        <start-class>de.trustable.ca3s.acmeproxy.Ca3SAcmeProxyApp</start-class>
+
         <!-- Dependency versions -->
         <jhipster-dependencies.version>3.7.1</jhipster-dependencies.version>
         <!-- The spring-boot version should match the one managed by
@@ -93,6 +95,7 @@
         <jib-maven-plugin.version>2.0.0</jib-maven-plugin.version>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>6.4.0</openapi-generator-maven-plugin.version>
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
         <jacoco.utReportFolder>${project.build.directory}/jacoco/test</jacoco.utReportFolder>
         <jacoco.utReportFile>${jacoco.utReportFolder}/test.exec</jacoco.utReportFile>
@@ -101,6 +104,8 @@
         <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <!-- jhipster-needle-maven-property -->
+
+        <nimbus-jose-jwt-version>9.30.2</nimbus-jose-jwt-version>
 
         <webSocketDTOVersion>0.0.1-SNAPSHOT</webSocketDTOVersion>
 
@@ -151,6 +156,7 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
@@ -159,6 +165,15 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-bean-validators</artifactId>
         </dependency>
+
+        <!-- Newer version introduced by adcsProxyClient
+    https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.2.8</version>
+        </dependency>
+
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -318,8 +333,20 @@
         <!-- jhipster-needle-maven-add-dependency -->
 
         <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>${nimbus-jose-jwt-version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>de.trustable.ca3s</groupId>
+            <artifactId>acmeChallengeHandler</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
@@ -391,9 +418,43 @@
                 <artifactId>properties-maven-plugin</artifactId>
             </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
+            <!--plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+            </plugin-->
+
         </plugins>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <!--
+                        Plugin that provides API-first development using openapi-generator to
+                        generate Spring-MVC endpoint stubs at compile time from an OpenAPI definition file
+                    -->
+                    <groupId>org.openapitools</groupId>
+                    <artifactId>openapi-generator-maven-plugin</artifactId>
+                    <version>${openapi-generator-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <inputSpec>C:\Users\kuehn\IdeaProjects\acmeProxy\src\main\resources\oas\openapi.yaml</inputSpec>
+                                <generatorName>spring</generatorName>
+                                <apiPackage>de.trustable.ca3s.acme.proxy.web.api</apiPackage>
+                                <modelPackage>de.trustable.ca3s.acme.proxy.service.api.dto</modelPackage>
+                                <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+                                <importMappings>Problem=org.zalando.problem.Problem</importMappings>
+                                <skipValidateSpec>false</skipValidateSpec>
+                                <configOptions>
+                                    <delegatePattern>true</delegatePattern>
+                                    <title>acme-proxy</title>
+                                </configOptions>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
@@ -894,18 +955,7 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <!--
-                Profile for tracing requests with Zipkin.
-            -->
-            <id>zipkin</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-zipkin</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
+
         <profile>
             <!--
                 Profile for applying IDE-specific configuration.

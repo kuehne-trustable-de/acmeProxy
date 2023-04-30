@@ -1,0 +1,523 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: https://ca3s.trustable.eu
+    description: Generated server url
+paths:
+  /acme/{realm}/newNonce:
+    get:
+      tags:
+        - new-nonce-controller
+      operationId: viaGet
+      parameters:
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    post:
+      tags:
+        - new-nonce-controller
+      operationId: viaGet_1
+      parameters:
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    head:
+      tags:
+        - new-nonce-controller
+      operationId: viaHead
+      parameters:
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /acme/{realm}/directory:
+    get:
+      tags:
+        - directory-controller
+      operationId: getDirectory
+      parameters:
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectoryResponse'
+    post:
+      tags:
+        - directory-controller
+      operationId: getDirectory_1
+      parameters:
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectoryResponse'
+  /acme/{realm}/order/{orderId}:
+    post:
+      tags:
+        - order-controller
+      operationId: postAsGetOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/jose+json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  /acme/{realm}/order/finalize/{orderId}:
+    post:
+      tags:
+        - order-controller
+      operationId: finalizeOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/jose+json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  /acme/{realm}/newOrder:
+    post:
+      tags:
+        - new-order-controller
+      operationId: consumingPostedJws_1
+      parameters:
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/jws:
+            schema:
+              type: string
+          application/jose+json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /acme/{realm}/newAccount:
+    post:
+      tags:
+        - new-account-controller
+      operationId: consumingPostedJws_2
+      parameters:
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/jws:
+            schema:
+              type: string
+          application/jose+json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /acme/{realm}/challenge/{challengeId}:
+    get:
+      tags:
+        - challenge-controller
+      operationId: getChallenge
+      parameters:
+        - name: challengeId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+        - challenge-controller
+      operationId: postChallenge
+      parameters:
+        - name: challengeId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/jose+json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  /acme/{realm}/cert/{certId}:
+    get:
+      tags:
+        - acme-certificate-controller
+      operationId: getCertificatePKIX
+      parameters:
+        - name: certId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+        - acme-certificate-controller
+      operationId: retrieveCertificate
+      parameters:
+        - name: Accept
+          in: header
+          required: false
+          schema:
+            type: string
+            default: application/pem-certificate-chain
+        - name: Content-Type
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: certId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/jose+json:
+            schema:
+              type: string
+          application/pkix-cert:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /acme/{realm}/cert/revoke:
+    post:
+      tags:
+        - acme-certificate-controller
+      operationId: revokeCertificate
+      parameters:
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/jose+json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /acme/{realm}/authorization/{authorizationId}:
+    get:
+      tags:
+        - authorization-controller
+      operationId: getAuthorization
+      parameters:
+        - name: authorizationId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+        - authorization-controller
+      operationId: postAuthorization
+      parameters:
+        - name: authorizationId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/jose+json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  /acme/{realm}/acct/{accountId}:
+    post:
+      tags:
+        - account-controller
+      operationId: updateAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/jose+json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /acme/{realm}/acct/{accountId}/orders:
+    post:
+      tags:
+        - account-controller
+      operationId: getAccountOrders
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+            default: '0'
+      requestBody:
+        content:
+          application/jose+json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /acme/{realm}/acct/changeKey:
+    post:
+      tags:
+        - account-controller
+      operationId: changeKey
+      parameters:
+        - name: realm
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/jose+json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+components:
+  schemas:
+    DirectoryResponse:
+      type: object
+      properties:
+        revokeUri:
+          type: string
+          format: uri
+          writeOnly: true
+        newNonce:
+          type: string
+          format: uri
+        newAccount:
+          type: string
+          format: uri
+        newOrder:
+          type: string
+          format: uri
+        newAuthz:
+          type: string
+          format: uri
+        keyChange:
+          type: string
+          format: uri
+        revokeCert:
+          type: string
+          format: uri
