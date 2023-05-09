@@ -3,10 +3,8 @@ package de.trustable.ca3s.acmeproxy.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JOSEException;
-import de.trustable.ca3s.acmeproxy.service.dto.AcmeChallenge;
-import de.trustable.ca3s.acmeproxy.service.dto.AcmeChallengeValidation;
-import de.trustable.ca3s.acmeproxy.service.dto.AcmeChallenges;
-import de.trustable.ca3s.acmeproxy.service.dto.ChallengeStatus;
+import de.trustable.ca3s.acmeproxy.config.RequestProxyConfig;
+import de.trustable.ca3s.acmeproxy.service.dto.*;
 import de.trustable.ca3s.challenge.ChallengeValidator;
 import de.trustable.ca3s.challenge.exception.ChallengeDNSException;
 import de.trustable.ca3s.challenge.exception.ChallengeDNSIdentifierException;
@@ -32,12 +30,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @Component
 public class ChallengeScheduler {
 
-    static MediaType APPLICATION_JWS = MediaType.parseMediaType("application/jws");
-
     transient Logger LOG = LoggerFactory.getLogger(ChallengeScheduler.class);
 
     private final String remoteAcmeServer;
-    private final long requestProxyConfigId;
+
+    private final RequestProxyConfig requestProxyConfig;
 
     private final ChallengeValidator challengeValidator;
     private RestTemplate restTemplate = new RestTemplate();
@@ -46,20 +43,21 @@ public class ChallengeScheduler {
     private final ObjectMapper objectMapper;
 
     public ChallengeScheduler(@Value("${acme.proxy.remote.server:http://localhost:8080}") String remoteAcmeServer,
-                              @Value("${acme.proxy.id:-1}") long requestProxyConfigId,
+                              RequestProxyConfig requestProxyConfig,
                               @Value("${acme.proxy.dns.server:}") String resolverHost,
                               @Value("${acme.proxy.dns.port:53}") int resolverPort,
                               @Value("${acme.proxy.http.timeoutMilliSec:1000}") int timeoutMilliSec,
-                              JWSService jwsService, ObjectMapper objectMapper) {
+                              JWSService jwsService,
+                              ObjectMapper objectMapper) {
         this.remoteAcmeServer = remoteAcmeServer;
-        this.requestProxyConfigId = requestProxyConfigId;
+        this.requestProxyConfig = requestProxyConfig;
         this.jwsService = jwsService;
         this.objectMapper = objectMapper;
 
         challengeValidator = new ChallengeValidator(resolverHost,
-        resolverPort,
-        timeoutMilliSec,
-        null, null);
+            resolverPort,
+            timeoutMilliSec,
+            null, null);
     }
 
     @Scheduled(fixedDelay = 5000)
@@ -69,8 +67,9 @@ public class ChallengeScheduler {
         String resourceUrlValidation = remoteAcmeServer + "/api/acme-challenges/validation";
 
         try {
-            LOG.debug("checking for challenges at {}", remoteAcmeServer);
+            RemoteRequestProxyConfigView remoteRequestProxyConfigView = requestProxyConfig.getConfig();
 
+            LOG.debug("checking for challenges at {}", remoteAcmeServer);
             ResponseEntity<AcmeChallenges> responseEntity;
 
             try {
@@ -80,7 +79,7 @@ public class ChallengeScheduler {
                     HttpMethod.POST,
                     buildHttpEntityBody(jwt),
                     AcmeChallenges.class,
-                    requestProxyConfigId);
+                    remoteRequestProxyConfigView.getId());
 
                 LOG.info("server returns #{} pending challenge", responseEntity.getBody().size());
             } catch (JOSEException e) {
@@ -99,7 +98,7 @@ public class ChallengeScheduler {
 
                     AcmeChallengeValidation acmeChallengeValidation = new AcmeChallengeValidation();
                     acmeChallengeValidation.setChallengeId(acmeChallenge.getChallengeId());
-                    acmeChallengeValidation.setRequestProxyConfigId(requestProxyConfigId);
+                    acmeChallengeValidation.setRequestProxyConfigId(remoteRequestProxyConfigView.getId());
 
                     try {
                         Collection<String> challengeResponses = processChallenge(acmeChallenge);
@@ -110,9 +109,9 @@ public class ChallengeScheduler {
                         acmeChallengeValidation.setStatus(ChallengeStatus.INVALID);
                         acmeChallengeValidation.setError(e.getMessage());
                     } catch (ChallengeValidationFailedException |
-                        ChallengeDNSException |
-                        ChallengeDNSIdentifierException |
-                        GeneralSecurityException e) {
+                             ChallengeDNSException |
+                             ChallengeDNSIdentifierException |
+                             GeneralSecurityException e) {
                         acmeChallengeValidation.setStatus(ChallengeStatus.PENDING);
                         acmeChallengeValidation.setError(e.getMessage());
                     }
@@ -135,12 +134,12 @@ public class ChallengeScheduler {
                     }
                 }
             }
-        }catch( ResourceAccessException resourceAccessException){
+        } catch (ResourceAccessException resourceAccessException) {
             LOG.debug("ca3s server not accessible");
-        }catch( HttpClientErrorException httpClientErrorException){
-            if( httpClientErrorException.getRawStatusCode() == 404){
+        } catch (HttpClientErrorException httpClientErrorException) {
+            if (httpClientErrorException.getRawStatusCode() == 404) {
                 LOG.debug("no pending challenges");
-            }else {
+            } else {
                 LOG.warn("problem retrieving pending challenges: {}", httpClientErrorException.getMessage());
             }
         }
@@ -148,7 +147,7 @@ public class ChallengeScheduler {
 
     private Collection<String> processChallenge(AcmeChallenge acmeChallenge) throws ChallengeUnknownHostException, ChallengeValidationFailedException, ChallengeDNSException, ChallengeDNSIdentifierException, GeneralSecurityException {
         Collection<String> challengeResponses = new ArrayList<>();
-        switch(acmeChallenge.getType()){
+        switch (acmeChallenge.getType()) {
             case AcmeChallenge.CHALLENGE_TYPE_HTTP_01:
                 challengeResponses.add(challengeValidator.retrieveChallengeHttp(acmeChallenge.getValue(), acmeChallenge.getToken()));
                 break;
@@ -165,19 +164,6 @@ public class ChallengeScheduler {
         }
         LOG.debug("challenge response for '{}' found: {}", acmeChallenge.getValue(), challengeResponses);
         return challengeResponses;
-    }
-
-    HttpEntity buildHttpEntityHeaderOnly() {
-
-        // create headers
-        HttpHeaders headers = new HttpHeaders();
-
-        // set `content-type` header
-        headers.setContentType(APPLICATION_JWS);
-        // set `accept` header
-        headers.setAccept(Collections.singletonList(APPLICATION_JSON));
-
-        return new HttpEntity<>(headers);
     }
 
     HttpEntity<String> buildHttpEntityBody(final String jws) throws JOSEException {
