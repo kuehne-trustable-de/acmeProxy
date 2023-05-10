@@ -115,8 +115,6 @@
         <dependencyCheck.version>7.4.4</dependencyCheck.version>
         <dependencyCheck.skip>false</dependencyCheck.skip>
 
-        <gpg.keyname>5F46A2C0A82BD58E</gpg.keyname>
-
     </properties>
 
     <dependencyManagement>
