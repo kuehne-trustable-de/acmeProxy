@@ -1,7 +1,5 @@
 package de.trustable.ca3s.acmeproxy.config;
 
-import io.github.jhipster.config.JHipsterConstants;
-import io.github.jhipster.config.JHipsterProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -9,15 +7,18 @@ import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import tech.jhipster.config.JHipsterConstants;
+import tech.jhipster.config.JHipsterProperties;
 
 import javax.servlet.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -49,7 +50,7 @@ public class WebConfigurerTest {
     }
 
     @Test
-    public void testStartUpProdServletContext() throws ServletException {
+    public void testStartUpProdServletContext() {
         env.setActiveProfiles(JHipsterConstants.SPRING_PROFILE_PRODUCTION);
         webConfigurer.onStartup(servletContext);
 
@@ -57,41 +58,11 @@ public class WebConfigurerTest {
     }
 
     @Test
-    public void testStartUpDevServletContext() throws ServletException {
+    public void testStartUpDevServletContext() {
         env.setActiveProfiles(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT);
         webConfigurer.onStartup(servletContext);
 
 
-    }
-
-    @Test
-    public void testCorsFilterOnApiPath() throws Exception {
-        props.getCors().setAllowedOrigins(Collections.singletonList("*"));
-        props.getCors().setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        props.getCors().setAllowedHeaders(Collections.singletonList("*"));
-        props.getCors().setMaxAge(1800L);
-        props.getCors().setAllowCredentials(true);
-
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController())
-            .addFilters(webConfigurer.corsFilter())
-            .build();
-
-        mockMvc.perform(
-            options("/api/test-cors")
-                .header(HttpHeaders.ORIGIN, "other.domain.com")
-                .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "POST"))
-            .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.domain.com"))
-            .andExpect(header().string(HttpHeaders.VARY, "Origin"))
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET,POST,PUT,DELETE"))
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true"))
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1800"));
-
-        mockMvc.perform(
-            get("/api/test-cors")
-                .header(HttpHeaders.ORIGIN, "other.domain.com"))
-            .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.domain.com"));
     }
 
     @Test

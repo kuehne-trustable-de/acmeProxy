@@ -25,12 +25,6 @@ logging:
       wire: INFO
 
 spring:
-  profiles:
-    active: dev
-    include:
-      - swagger
-      # Uncomment to activate TLS for the dev profile
-      #- tls
   devtools:
     restart:
       enabled: true
@@ -49,9 +43,6 @@ spring:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
     cache: false
-  sleuth:
-    sampler:
-      probability: 1 # report 100% of traces
 
 server:
   port: 8085
@@ -82,17 +73,12 @@ jhipster:
         token-validity-in-seconds-for-remember-me: 2592000
   mail: # specific JHipster mail property, for standard properties see MailProperties
     base-url: http://127.0.0.1:8085
-  metrics:
-    logs: # Reports metrics in the logs
-      enabled: false
-      report-frequency: 60 # in seconds
   logging:
     use-json-format: false # By default, logs are not in Json format
     logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
       enabled: false
       host: localhost
       port: 5000
-      queue-size: 512
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
@@ -105,10 +91,8 @@ jhipster:
 # application:
 acme:
   proxy:
+    id: 1
     connection:
       secret: FooFooFoo
     remote:
       server: http://localhost:9090
-    local:
-      server: http://localhost:${server.port}
-    id: 1

@@ -109,10 +109,11 @@ jhipster:
   #     max-age: 1800
   mail:
     from: ca3sAcmeProxy@localhost
-  swagger:
-    default-include-pattern: /api/.*
-    title: ca3sAcmeProxy API
-    description: ca3sAcmeProxy API documentation
+  api-docs:
+    default-include-pattern: ${server.servlet.context-path:}/api/**
+    management-include-pattern: ${server.servlet.context-path:}/management/**
+    title: Ca 3 S Acme Proxy API
+    description: Ca 3 S Acme Proxy API documentation
     version: 0.0.1
     terms-of-service-url:
     contact-name:
@@ -120,6 +121,7 @@ jhipster:
     contact-email:
     license: unlicensed
     license-url:
+
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

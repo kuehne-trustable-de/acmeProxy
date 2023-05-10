@@ -1,6 +1,5 @@
 package de.trustable.ca3s.acmeproxy.config;
 
-import io.github.jhipster.config.JHipsterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
@@ -10,9 +9,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import tech.jhipster.config.JHipsterProperties;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 /**
  * Configuration of web application with Servlet 3.0 APIs.
@@ -32,7 +31,7 @@ public class WebConfigurer implements ServletContextInitializer {
     }
 
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
+    public void onStartup(ServletContext servletContext) {
         if (env.getActiveProfiles().length != 0) {
             log.info("Web application configuration, using profiles: {}", (Object[]) env.getActiveProfiles());
         }

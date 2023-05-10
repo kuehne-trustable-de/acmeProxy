@@ -1,7 +1,6 @@
 package de.trustable.ca3s.acmeproxy.service.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.annotation.Generated;
 import javax.validation.Valid;
@@ -46,7 +45,6 @@ public class DirectoryResponse {
    * @return revokeUri
   */
   @Valid
-  @Schema(name = "revokeUri", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   public URI getRevokeUri() {
     return revokeUri;
   }
@@ -65,7 +63,6 @@ public class DirectoryResponse {
    * @return newNonce
   */
   @Valid
-  @Schema(name = "newNonce", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   public URI getNewNonce() {
     return newNonce;
   }
@@ -84,7 +81,6 @@ public class DirectoryResponse {
    * @return newAccount
   */
   @Valid
-  @Schema(name = "newAccount", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   public URI getNewAccount() {
     return newAccount;
   }
@@ -103,7 +99,6 @@ public class DirectoryResponse {
    * @return newOrder
   */
   @Valid
-  @Schema(name = "newOrder", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   public URI getNewOrder() {
     return newOrder;
   }
@@ -122,7 +117,6 @@ public class DirectoryResponse {
    * @return newAuthz
   */
   @Valid
-  @Schema(name = "newAuthz", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   public URI getNewAuthz() {
     return newAuthz;
   }
@@ -141,7 +135,6 @@ public class DirectoryResponse {
    * @return keyChange
   */
   @Valid
-  @Schema(name = "keyChange", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   public URI getKeyChange() {
     return keyChange;
   }
@@ -160,7 +153,6 @@ public class DirectoryResponse {
    * @return revokeCert
   */
   @Valid
-  @Schema(name = "revokeCert", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   public URI getRevokeCert() {
     return revokeCert;
   }

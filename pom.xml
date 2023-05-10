@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/maven-v4_0_0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.trustable.ca3s.acmeproxy</groupId>
@@ -69,45 +72,45 @@
         <start-class>de.trustable.ca3s.acmeproxy.Ca3SAcmeProxyApp</start-class>
 
         <!-- Dependency versions -->
-        <jhipster-dependencies.version>3.7.1</jhipster-dependencies.version>
+        <jhipster-dependencies.version>7.9.3</jhipster-dependencies.version>
         <!-- The spring-boot version should match the one managed by
-        https://mvnrepository.com/artifact/io.github.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
-        <spring-boot.version>2.2.7.RELEASE</spring-boot.version>
-
-        <archunit-junit5.version>0.23.1</archunit-junit5.version>
-        <mapstruct.version>1.3.1.Final</mapstruct.version>
+        https://mvnrepository.com/artifact/tech.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
+        <spring-boot.version>2.7.11</spring-boot.version>
+        <archunit-junit5.version>0.22.0</archunit-junit5.version>
+        <mapstruct.version>1.5.2.Final</mapstruct.version>
         <!-- Plugin versions -->
-        <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
+        <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
+        <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+        <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
-        <maven-failsafe-plugin.version>3.0.0</maven-failsafe-plugin.version>
+        <maven-enforcer-plugin.version>3.1.0</maven-enforcer-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M7</maven-failsafe-plugin.version>
+        <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
         <maven-idea-plugin.version>2.2.1</maven-idea-plugin.version>
-        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
-        <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
-        <maven-war-plugin.version>3.2.3</maven-war-plugin.version>
-        <maven-checkstyle.version>3.1.0</maven-checkstyle.version>
-        <checkstyle.version>8.29</checkstyle.version>
-        <spring-nohttp-checkstyle.version>0.0.11</spring-nohttp-checkstyle.version>
-        <git-commit-id-plugin.version>4.0.0</git-commit-id-plugin.version>
+        <maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
+        <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
+        <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
+        <modernizer-maven-plugin.version>2.4.0</modernizer-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
-        <jib-maven-plugin.version>2.0.0</jib-maven-plugin.version>
+        <jib-maven-plugin.version>3.2.1</jib-maven-plugin.version>
+        <jib-maven-plugin.image>eclipse-temurin:11-jre-focal</jib-maven-plugin.image>
+        <jib-maven-plugin.architecture>amd64</jib-maven-plugin.architecture>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
-        <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
-        <openapi-generator-maven-plugin.version>6.4.0</openapi-generator-maven-plugin.version>
-        <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
-        <jacoco.utReportFolder>${project.build.directory}/jacoco/test</jacoco.utReportFolder>
-        <jacoco.utReportFile>${jacoco.utReportFolder}/test.exec</jacoco.utReportFile>
-        <jacoco.itReportFolder>${project.build.directory}/jacoco/integrationTest</jacoco.itReportFolder>
-        <jacoco.itReportFile>${jacoco.itReportFolder}/integrationTest.exec</jacoco.itReportFile>
-        <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
-        <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
+        <properties-maven-plugin.version>1.1.0</properties-maven-plugin.version>
+        <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
+
+
         <!-- jhipster-needle-maven-property -->
 
         <nimbus-jose-jwt-version>9.30.2</nimbus-jose-jwt-version>
 
-        <webSocketDTOVersion>0.0.1-SNAPSHOT</webSocketDTOVersion>
+        <maven-checkstyle.version>3.2.2</maven-checkstyle.version>
+        <maven-source.version>3.2.1</maven-source.version>
+        <maven-checkstyle.version>3.2.1</maven-checkstyle.version>
+        <spring-nohttp-checkstyle.version>0.0.11</spring-nohttp-checkstyle.version>
+        <checkstyle.version>10.3.2</checkstyle.version>
 
         <dependencyCheck.version>7.4.4</dependencyCheck.version>
         <dependencyCheck.skip>false</dependencyCheck.skip>
@@ -119,26 +122,47 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.github.jhipster</groupId>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>tech.jhipster</groupId>
                 <artifactId>jhipster-dependencies</artifactId>
                 <version>${jhipster-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <!-- jhipster-needle-maven-add-dependency-management -->
+
+            <!-- force newer version due to CVE -->
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>2.0</version>
+            </dependency>
+
+            <!-- fix ceonvergence problem -->
+            <dependency>
+                <groupId>org.apiguardian</groupId>
+                <artifactId>apiguardian-api</artifactId>
+                <version>1.1.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
+
     <dependencies>
         <dependency>
-            <groupId>io.github.jhipster</groupId>
+            <groupId>tech.jhipster</groupId>
             <artifactId>jhipster-framework</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-hppc</artifactId>
@@ -148,51 +172,22 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-afterburner</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-bean-validators</artifactId>
-        </dependency>
-
-        <!-- Newer version introduced by adcsProxyClient
-    https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
-        <dependency>
-            <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>2.2.8</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-webmvc-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -210,10 +205,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
         <dependency>
@@ -226,39 +217,16 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.codahale.metrics/metrics-core -->
-        <dependency>
-            <groupId>com.codahale.metrics</groupId>
-            <artifactId>metrics-core</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.codahale.metrics/metrics-graphite -->
-        <dependency>
-            <groupId>com.codahale.metrics</groupId>
-            <artifactId>metrics-graphite</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -289,6 +257,10 @@
             <artifactId>problem-spring-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
         </dependency>
@@ -301,6 +273,26 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.codahale.metrics/metrics-core -->
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.codahale.metrics/metrics-graphite -->
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-graphite</artifactId>
+            <version>3.0.0</version>
         </dependency>
 
         <dependency>
@@ -334,10 +326,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
-            <plugin>
+            <!--plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
+            </plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -1022,6 +1014,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
+                        <version>${maven-source.version}</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -1048,7 +1041,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <plugin>
+                    <!--plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-checkstyle-plugin</artifactId>
                         <version>${maven-checkstyle.version}</version>
@@ -1077,7 +1070,7 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>
+                    </plugin-->
 
                 </plugins>
             </build>

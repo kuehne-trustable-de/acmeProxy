@@ -287,7 +287,7 @@ public interface AcmeApiDelegate {
      *
      * @param realm  (required)
      * @return OK (status code 200)
-     * @see AcmeApi#viaGet1
+     * @see AcmeApi#viaGet
      */
     default ResponseEntity<String> viaPost(String realm) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);

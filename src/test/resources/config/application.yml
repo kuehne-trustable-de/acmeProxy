@@ -13,13 +13,6 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
-eureka:
-  client:
-    enabled: false
-  instance:
-    appname: ca3sAcmeProxy
-    instanceId: ca3sAcmeProxy:${spring.application.instance-id:${random.value}}
-
 spring:
   application:
     name: ca3sAcmeProxy
@@ -66,7 +59,6 @@ jhipster:
       enabled: false
       host: localhost
       port: 5000
-      queue-size: 512
   security:
     authentication:
       jwt:
@@ -74,10 +66,6 @@ jhipster:
         base64-secret: Yzg4YWZkN2NhMzcxOWUyOTFkMzM1M2M3MGEwNGY5MTdmM2RlZjQ1OTJjNzBhZDIwZjU0MzU3YTExOGEzMWY0M2E1ZWFlNDRjNjM1ZDFhNWUxYTk5MjhmM2Y2OGI5MDA2NWY0ZWQ0NmNiMmUxNmQ1MjU5YWQyMzE0MjA2YTliNTY=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
-  metrics:
-    logs: # Reports metrics in the logs
-      enabled: true
-      report-frequency: 60 # in seconds
 
 # ===================================================================
 # Application specific properties
