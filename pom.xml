@@ -10,7 +10,10 @@
     <artifactId>ca-3-s-acme-proxy</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
+
     <name>Ca 3 S Acme Proxy</name>
+    <description>ACME proxy handling incoming request and challanges in a separate network</description>
+    <url>https://github.com/kuehne-trustable-de/acmeProxy/</url>
 
 	<licenses>
 		<license>
