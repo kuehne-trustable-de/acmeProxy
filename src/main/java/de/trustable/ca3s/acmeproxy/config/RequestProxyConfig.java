@@ -69,7 +69,11 @@ public class RequestProxyConfig {
 
         } catch (
             ResourceAccessException resourceAccessException) {
-            LOG.debug("ca3s server not accessible");
+            if(LOG.isDebugEnabled()) {
+                LOG.debug("ca3s server not accessible", resourceAccessException);
+            }else{
+                LOG.info("ca3s server not accessible");
+            }
             throw resourceAccessException;
         } catch ( JOSEException | HttpClientErrorException exception) {
             LOG.warn("problem retrieving remote configuration data: {}", exception.getMessage());

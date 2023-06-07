@@ -81,7 +81,11 @@ public class ChallengeScheduler {
                     AcmeChallenges.class,
                     remoteRequestProxyConfigView.getId());
 
-                LOG.info("server returns #{} pending challenge", responseEntity.getBody().size());
+                if( responseEntity.getBody() == null){
+                    LOG.info("server returns empty response");
+                }else {
+                    LOG.info("server returns #{} pending challenge", responseEntity.getBody().size());
+                }
             } catch (JOSEException e) {
                 LOG.warn("problem creating JWS for validation payload", e);
 
@@ -135,7 +139,11 @@ public class ChallengeScheduler {
                 }
             }
         } catch (ResourceAccessException resourceAccessException) {
-            LOG.debug("ca3s server not accessible");
+            if(LOG.isDebugEnabled()) {
+                LOG.debug("ca3s server not accessible", resourceAccessException);
+            }else{
+                LOG.info("ca3s server not accessible");
+            }
         } catch (HttpClientErrorException httpClientErrorException) {
             if (httpClientErrorException.getRawStatusCode() == 404) {
                 LOG.debug("no pending challenges");
