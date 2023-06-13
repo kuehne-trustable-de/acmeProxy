@@ -15,9 +15,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.*;
 
 import static de.trustable.ca3s.acmeproxy.web.rest.ACMEController.*;
 import static org.springframework.http.CacheControl.noStore;
@@ -40,19 +38,19 @@ public class AcmeApiImpl implements AcmeApiDelegate {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private final String[] droppableHeaders;
+    private final Set<String> forwardResponseHeaderSet = new HashSet<>();
 
     public AcmeApiImpl(@Value("${acme.proxy.remote.server:http://localhost:8080}") String remoteAcmeServer,
-                       @Value("${acme.proxy.headers.drop:}") String[] droppableHeaders,
+                       @Value("${acme.proxy.headers.forward.response:Location,Link,Replay-Nonce,Retry-After,Content-Type}") String[] forwardResponseHeaders,
                        RequestProxyConfig requestProxyConfig) {
 
         this.targetUrl = remoteAcmeServer + "/acme/{realm}/";
         this.requestProxyConfig = requestProxyConfig;
-        this.droppableHeaders = droppableHeaders;
+        this.forwardResponseHeaderSet.addAll(Arrays.asList(forwardResponseHeaders));
 
         LOG.debug("remoteAcmeServer: '{}'", remoteAcmeServer);
         LOG.debug("target ACME server Url: '{}'", targetUrl);
-        LOG.debug("droppable headers: '{}'", Arrays.asList(droppableHeaders));
+        LOG.debug("forward response header headers: '{}'", Arrays.asList(forwardResponseHeaders));
 
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
     }
@@ -74,7 +72,9 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         LOG.debug("forwarding {}/acct/changeKey", realm);
         ResponseEntity<Object> responseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(headers, body), Object.class, realm);
-        return logResponseEntity(responseEntity);
+
+        ResponseEntity<Object> acmeResponseEntity = handleResponseEntity(responseEntity);
+        return logResponseEntity(acmeResponseEntity);
     }
 
     /**
@@ -94,7 +94,9 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         LOG.debug("forwarding {}/newOrder", realm);
         ResponseEntity<Object> responseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(headers, body), Object.class, realm);
-        return logResponseEntity(responseEntity);
+
+        ResponseEntity<Object> acmeResponseEntity = handleResponseEntity(responseEntity);
+        return logResponseEntity(acmeResponseEntity);
     }
 
     /**
@@ -114,7 +116,9 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         LOG.debug("forwarding {}/newAccount", realm);
         ResponseEntity<Object> responseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(headers, body), Object.class, realm);
-        return logResponseEntity(responseEntity);
+
+        ResponseEntity<Object> acmeResponseEntity = handleResponseEntity(responseEntity);
+        return logResponseEntity(acmeResponseEntity);
     }
 
     /**
@@ -136,7 +140,9 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         LOG.debug("forwarding {}/order/finalize/{}", realm, orderId);
         ResponseEntity<Object> responseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(headers, body), Object.class, realm, orderId);
-        return logResponseEntity(responseEntity);
+
+        ResponseEntity<Object> acmeResponseEntity = handleResponseEntity(responseEntity);
+        return logResponseEntity(acmeResponseEntity);
     }
 
     /**
@@ -160,7 +166,9 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         LOG.debug("forwarding {}/acct/{}/orders", realm, accountId);
         ResponseEntity<Object> responseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(headers, body), Object.class, realm, accountId);
-        return logResponseEntity(responseEntity);
+
+        ResponseEntity<Object> acmeResponseEntity = handleResponseEntity(responseEntity);
+        return logResponseEntity(acmeResponseEntity);
     }
 
     /**
@@ -180,7 +188,9 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         LOG.debug("forwarding {}/authorization/{}", realm, authorizationId);
         ResponseEntity<Object> responseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.GET, buildHttpEntity(headers), Object.class, realm, authorizationId);
-        return logResponseEntity(responseEntity);
+
+        ResponseEntity<Object> acmeResponseEntity = handleResponseEntity(responseEntity);
+        return logResponseEntity(acmeResponseEntity);
     }
 
     /**
@@ -199,7 +209,9 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         LOG.debug("forwarding {}/cert/{}", realm, certId);
         ResponseEntity<Object> responseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.GET, buildHttpEntity(headers), Object.class, realm, certId);
-        return logResponseEntity(responseEntity);
+
+        ResponseEntity<Object> acmeResponseEntity = handleResponseEntity(responseEntity);
+        return logResponseEntity(acmeResponseEntity);
     }
 
 
@@ -219,7 +231,9 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         LOG.debug("forwarding {}/challenge/{}", realm, challengeId);
         ResponseEntity<Object> responseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.GET, buildHttpEntity(headers), Object.class, realm, challengeId);
-        return logResponseEntity(responseEntity);
+
+        ResponseEntity<Object> acmeResponseEntity = handleResponseEntity(responseEntity);
+        return logResponseEntity(acmeResponseEntity);
     }
 
     /**
@@ -235,10 +249,13 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         checkRealm(realm, resourceUrl);
         LOG.debug("forwarding GET {}/directory", realm);
 
-        ResponseEntity<DirectoryResponse> directoryResponseResponseEntity =
+        ResponseEntity<DirectoryResponse> directoryResponseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.GET, buildHttpEntity(headers), DirectoryResponse.class, realm);
 
-        return directoryResponseResponseEntity;
+        return ResponseEntity.status(directoryResponseEntity.getStatusCode())
+            .headers(filterResponseHttpHeaders(directoryResponseEntity))
+            .body(directoryResponseEntity.getBody());
+
     }
 
     /**
@@ -253,10 +270,12 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         String resourceUrl = targetUrl + "directory";
         checkRealm(realm, resourceUrl);
         LOG.debug("forwarding POST {}/directory", realm);
-        ResponseEntity<DirectoryResponse> directoryResponseResponseEntity =
+        ResponseEntity<DirectoryResponse> directoryResponseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(headers), DirectoryResponse.class, realm);
 
-        return directoryResponseResponseEntity;
+        return ResponseEntity.status(directoryResponseEntity.getStatusCode())
+            .headers(filterResponseHttpHeaders(directoryResponseEntity))
+            .body(directoryResponseEntity.getBody());
     }
 
     /**
@@ -277,7 +296,9 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         LOG.debug("forwarding {}/order/{}", realm, orderId);
         ResponseEntity<Object> responseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(headers, body), Object.class, realm, orderId);
-        return logResponseEntity(responseEntity);
+
+        ResponseEntity<Object> acmeResponseEntity = handleResponseEntity(responseEntity);
+        return logResponseEntity(acmeResponseEntity);
     }
 
     /**
@@ -298,7 +319,9 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         LOG.debug("forwarding {}/authorization/{}", realm, authorizationId);
         ResponseEntity<Object> responseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(headers, body), Object.class, realm, authorizationId);
-        return logResponseEntity(responseEntity);
+
+        ResponseEntity<Object> acmeResponseEntity = handleResponseEntity(responseEntity);
+        return logResponseEntity(acmeResponseEntity);
     }
 
     /**
@@ -319,7 +342,9 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         LOG.debug("forwarding {}/challenge/{}", realm, challengeId);
         ResponseEntity<Object> responseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(headers, body), Object.class, realm, challengeId);
-        return logResponseEntity(responseEntity);
+
+        ResponseEntity<Object> acmeResponseEntity = handleResponseEntity(responseEntity);
+        return logResponseEntity(acmeResponseEntity);
     }
 
     /**
@@ -348,12 +373,20 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         if ("application/pkix-cert".equals(mediaType)) {
             ResponseEntity<byte[]> responseEntity =
                 restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(headers, body), byte[].class, realm, certId);
-            return logResponseEntity(responseEntity);
+
+            return logResponseEntity(
+                ResponseEntity.status(responseEntity.getStatusCode())
+                    .headers(filterResponseHttpHeaders(responseEntity))
+                    .body(responseEntity.getBody()));
 
         } else {
             ResponseEntity<String> responseEntity =
                 restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(headers, body), String.class, realm, certId);
-            return logResponseEntity(responseEntity);
+
+            return logResponseEntity(
+                ResponseEntity.status(responseEntity.getStatusCode())
+                .headers(filterResponseHttpHeaders(responseEntity))
+                .body(responseEntity.getBody()));
         }
     }
 
@@ -373,7 +406,9 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         LOG.debug("forwarding {}/cert/revoke", realm);
         ResponseEntity<Object> responseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(headers, body), Object.class, realm);
-        return logResponseEntity(responseEntity);
+
+        ResponseEntity<Object> acmeResponseEntity = handleResponseEntity(responseEntity);
+        return logResponseEntity(acmeResponseEntity);
     }
 
     /**
@@ -394,7 +429,9 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         LOG.debug("forwarding {}/acct/{}", realm, accountId);
         ResponseEntity<Object> responseEntity =
             restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(headers, body), Object.class, realm, accountId);
-        return logResponseEntity(responseEntity);
+
+        ResponseEntity<Object> acmeResponseEntity = handleResponseEntity(responseEntity);
+        return logResponseEntity(acmeResponseEntity);
     }
 
     /**
@@ -412,7 +449,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
             restTemplate.exchange(resourceUrl, HttpMethod.GET, buildHttpEntity(), String.class, realm);
         LOG.debug("forwarding GET {}/newNonce : {}", realm, responseEntity.getHeaders().getFirst(REPLAY_NONCE_HEADER));
 
-        return logResponseEntity( ResponseEntity.noContent().headers(responseEntity.getHeaders())
+        return logResponseEntity( ResponseEntity.noContent().headers(filterResponseHttpHeaders(responseEntity))
             .cacheControl(noStore()).build());
     }
 
@@ -431,7 +468,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
             restTemplate.exchange(resourceUrl, HttpMethod.POST, buildHttpEntity(), String.class, realm);
         LOG.debug("forwarding POST {}/newNonce: {}", realm, responseEntity.getHeaders().getFirst(REPLAY_NONCE_HEADER));
 
-        return logResponseEntity( ResponseEntity.noContent().headers(responseEntity.getHeaders())
+        return logResponseEntity( ResponseEntity.noContent().headers(filterResponseHttpHeaders(responseEntity))
             .cacheControl(noStore()).build());
     }
 
@@ -451,14 +488,19 @@ public class AcmeApiImpl implements AcmeApiDelegate {
 
         ResponseEntity<String> stringResponseEntity = viaPost(realm, headers);
 
-        headers.addAll(stringResponseEntity.getHeaders());
+        headers.addAll(filterResponseHttpHeaders(stringResponseEntity));
 
-        return new ResponseEntity("",
+        return new ResponseEntity<>("",
             headers,
             stringResponseEntity.getStatusCode());
     }
 
     <T> ResponseEntity<T> logResponseEntity(final ResponseEntity<T> responseEntity) {
+
+        HttpHeaders headers = responseEntity.getHeaders();
+        for( String header : responseEntity.getHeaders().keySet()) {
+            LOG.debug("response header {} : {}", header, headers.get(header));
+        }
 
         LOG.debug("response status {}", responseEntity.getStatusCode());
         return responseEntity;
@@ -474,7 +516,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
         headers.add(HEADER_X_CA3S_FORWARDED_HOST, fromCurrentRequestUri().build().toString());
-        headers.add(HEADER_X_CA3S_PROXY_ID, "" + requestProxyConfig.getConfig().getId());
+        headers.add(HEADER_X_CA3S_PROXY_ID, String.valueOf(requestProxyConfig.getConfig().getId()));
 
 
         return new HttpEntity<>(headers);
@@ -508,10 +550,39 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         headers.addAll(callerHeaders);
 
         headers.add(HEADER_X_CA3S_FORWARDED_HOST, fromCurrentRequestUri().build().toString());
-        headers.add(HEADER_X_CA3S_PROXY_ID, "" + requestProxyConfig.getConfig().getId());
+        headers.add(HEADER_X_CA3S_PROXY_ID, String.valueOf(requestProxyConfig.getConfig().getId()));
         return headers;
     }
 
+
+    private ResponseEntity<Object> handleResponseEntity(ResponseEntity<Object> responseEntity) {
+
+        Object body = responseEntity.getBody();
+        if( body == null){
+            return ResponseEntity.status(responseEntity.getStatusCode())
+                .headers(filterResponseHttpHeaders(responseEntity))
+                .build();
+        }else {
+            return ResponseEntity.status(responseEntity.getStatusCode())
+                .headers(filterResponseHttpHeaders(responseEntity))
+                .body(responseEntity.getBody());
+        }
+    }
+
+    private HttpHeaders filterResponseHttpHeaders(ResponseEntity responseEntity) {
+        HttpHeaders responseHeaders = responseEntity.getHeaders();
+        HttpHeaders relevantHeaders = new HttpHeaders();
+        for( String headerName: responseHeaders.keySet()){
+            if( forwardResponseHeaderSet.contains(headerName)){
+                List<String> headerList = responseHeaders.get(headerName);
+                if( headerList == null){
+                    headerList = new ArrayList<>();
+                }
+                relevantHeaders.addAll(headerName, headerList);
+            }
+        }
+        return relevantHeaders;
+    }
 
     void checkRealm(final String realm, final String resourceUrl) {
         RemoteRequestProxyConfigView remoteRequestProxyConfigView = requestProxyConfig.getConfig();
