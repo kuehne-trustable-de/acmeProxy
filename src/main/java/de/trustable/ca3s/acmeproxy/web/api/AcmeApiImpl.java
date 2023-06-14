@@ -537,17 +537,26 @@ public class AcmeApiImpl implements AcmeApiDelegate {
     }
 
     private HttpHeaders processHttpHeaders(MultiValueMap<String, String> callerHeaders) {
+        boolean hasAcceptHeader = false;
         for(String headerName: callerHeaders.keySet()){
             if( callerHeaders.containsKey(headerName)) {
                 LOG.debug("incoming header '{}' with value(s) '{}'", headerName, String.join(",", callerHeaders.get(headerName)));
             }else{
                 LOG.debug("incoming header '{}' without value", headerName);
             }
+            if("Accept".equalsIgnoreCase(headerName)){
+                hasAcceptHeader = true;
+            }
         }
 
         // create headers
         HttpHeaders headers = new HttpHeaders();
         headers.addAll(callerHeaders);
+
+        if(!hasAcceptHeader){
+            headers.setAccept(Collections.singletonList(MediaType.ALL));
+            LOG.debug("added default Accept header");
+        }
 
         headers.add(HEADER_X_CA3S_FORWARDED_HOST, fromCurrentRequestUri().build().toString());
         headers.add(HEADER_X_CA3S_PROXY_ID, String.valueOf(requestProxyConfig.getConfig().getId()));
