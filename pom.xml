@@ -8,7 +8,7 @@
 
     <groupId>de.trustable.ca3s.acmeproxy</groupId>
     <artifactId>ca-3-s-acme-proxy</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <packaging>jar</packaging>
 
     <name>Ca 3 S Acme Proxy</name>
@@ -109,6 +109,8 @@
 
         <!-- jhipster-needle-maven-property -->
 
+        <acmeChallengeHandler.version>1.0.1</acmeChallengeHandler.version>
+        <bouncyCastle.version>1.74</bouncyCastle.version>
         <nimbus-jose-jwt-version>9.31</nimbus-jose-jwt-version>
 
         <maven-checkstyle.version>3.2.2</maven-checkstyle.version>
@@ -171,6 +173,14 @@
                 <artifactId>apiguardian-api</artifactId>
                 <version>1.1.2</version>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk18on</artifactId>
+                <version>${bouncyCastle.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -335,7 +345,7 @@
         <dependency>
             <groupId>de.trustable.ca3s</groupId>
             <artifactId>acmeChallengeHandler</artifactId>
-            <version>1.0.0</version>
+            <version>${acmeChallengeHandler.version}</version>
         </dependency>
 
     </dependencies>
