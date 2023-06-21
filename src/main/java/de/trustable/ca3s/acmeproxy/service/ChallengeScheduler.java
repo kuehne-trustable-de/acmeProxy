@@ -108,11 +108,12 @@ public class ChallengeScheduler {
                         Collection<String> challengeResponses = processChallenge(acmeChallenge);
                         acmeChallengeValidation.setStatus(ChallengeStatus.VALID);
                         acmeChallengeValidation.setResponses(challengeResponses.toArray(new String[0]));
-
-                    } catch (ChallengeUnknownHostException e) {
-                        acmeChallengeValidation.setStatus(ChallengeStatus.INVALID);
-                        acmeChallengeValidation.setError(e.getMessage());
-                    } catch (ChallengeValidationFailedException |
+// reject or retry in case of name resolution problems
+//                    } catch (ChallengeUnknownHostException e) {
+//                        acmeChallengeValidation.setStatus(ChallengeStatus.INVALID);
+//                        acmeChallengeValidation.setError(e.getMessage());
+                    } catch (ChallengeUnknownHostException |
+                             ChallengeValidationFailedException |
                              ChallengeDNSException |
                              ChallengeDNSIdentifierException |
                              GeneralSecurityException e) {
