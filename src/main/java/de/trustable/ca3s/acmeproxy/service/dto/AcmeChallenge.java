@@ -122,6 +122,7 @@ public class AcmeChallenge implements Serializable {
             "}";
     }
 
+
     public static final String CHALLENGE_TYPE_HTTP_01 = "http-01";
     public static final String CHALLENGE_TYPE_DNS_01 = "dns-01";
     public static final String CHALLENGE_TYPE_ALPN_01 = "tls-alpn-01";

@@ -21,9 +21,11 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
@@ -37,16 +39,21 @@ public class ChallengeScheduler {
     private final RequestProxyConfig requestProxyConfig;
 
     private final ChallengeValidator challengeValidator;
-    private RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate = new RestTemplate();
 
     private final JWSService jwsService;
     private final ObjectMapper objectMapper;
+    private final ThreadPoolExecutor executor;
+    private final Map<Long, Instant> currentChallengeMap = new HashMap<>();
 
     public ChallengeScheduler(@Value("${acme.proxy.remote.server:http://localhost:8080}") String remoteAcmeServer,
                               RequestProxyConfig requestProxyConfig,
                               @Value("${acme.proxy.dns.server:}") String resolverHost,
                               @Value("${acme.proxy.dns.port:53}") int resolverPort,
                               @Value("${acme.proxy.http.timeoutMilliSec:1000}") int timeoutMilliSec,
+                              @Value("${acme.challenge.http.ports:80}") int[] httpPorts,
+                              @Value("${acme.challenge.https.ports:443}") int[] httpsPorts,
+                              @Value("${acme.challenge.threads:4}") int nWorkerThreads,
                               JWSService jwsService,
                               ObjectMapper objectMapper) {
         this.remoteAcmeServer = remoteAcmeServer;
@@ -54,10 +61,13 @@ public class ChallengeScheduler {
         this.jwsService = jwsService;
         this.objectMapper = objectMapper;
 
+        this.executor =(ThreadPoolExecutor) Executors.newFixedThreadPool(nWorkerThreads);
+
         challengeValidator = new ChallengeValidator(resolverHost,
             resolverPort,
             timeoutMilliSec,
-            null, null);
+            httpPorts,
+            httpsPorts);
     }
 
     @Scheduled(fixedDelay = 5000)
@@ -100,42 +110,17 @@ public class ChallengeScheduler {
                 for (AcmeChallenge acmeChallenge : acmeChallenges) {
                     LOG.debug("pending challenge request relevant for this proxy: {}", acmeChallenge);
 
-                    AcmeChallengeValidation acmeChallengeValidation = new AcmeChallengeValidation();
-                    acmeChallengeValidation.setChallengeId(acmeChallenge.getChallengeId());
-                    acmeChallengeValidation.setRequestProxyConfigId(remoteRequestProxyConfigView.getId());
-
-                    try {
-                        Collection<String> challengeResponses = processChallenge(acmeChallenge);
-                        acmeChallengeValidation.setStatus(ChallengeStatus.VALID);
-                        acmeChallengeValidation.setResponses(challengeResponses.toArray(new String[0]));
-// reject or retry in case of name resolution problems
-//                    } catch (ChallengeUnknownHostException e) {
-//                        acmeChallengeValidation.setStatus(ChallengeStatus.INVALID);
-//                        acmeChallengeValidation.setError(e.getMessage());
-                    } catch (ChallengeUnknownHostException |
-                             ChallengeValidationFailedException |
-                             ChallengeDNSException |
-                             ChallengeDNSIdentifierException |
-                             GeneralSecurityException e) {
-                        acmeChallengeValidation.setStatus(ChallengeStatus.PENDING);
-                        acmeChallengeValidation.setError(e.getMessage());
-                    }
-
-                    try {
-                        String payload = objectMapper.writeValueAsString(acmeChallengeValidation);
-                        LOG.debug("serialized acmeChallengeValidation: '{}'", payload);
-
-                        String jws = jwsService.buildEmbeddingJWS(payload);
-
-                        ResponseEntity<?> response = restTemplate.exchange(
-                            resourceUrlValidation,
-                            HttpMethod.POST,
-                            buildHttpEntityBody(jws),
-                            Void.class);
-
-                        LOG.info("challenge update response {}", response);
-                    } catch (JOSEException | JsonProcessingException e) {
-                        LOG.warn("problem creating JWS for validation payload", e);
+                    if( currentChallengeMap.containsKey(acmeChallenge.getChallengeId())){
+                        LOG.debug("challenge #{} being processed, currently", acmeChallenge.getChallengeId() );
+                    }else{
+                        try {
+                            executor.submit(() -> {
+                                LOG.debug("challenge #{} in processing thread", acmeChallenge.getChallengeId());
+                                processChallenge(resourceUrlValidation, remoteRequestProxyConfigView, acmeChallenge);
+                            });
+                        }catch( RejectedExecutionException rejectedExecutionException){
+                            LOG.info("too many challenges ...", rejectedExecutionException );
+                        }
                     }
                 }
             }
@@ -152,6 +137,52 @@ public class ChallengeScheduler {
                 LOG.warn("problem retrieving pending challenges: {}", httpClientErrorException.getMessage());
             }
         }
+    }
+
+    private void processChallenge(String resourceUrlValidation, RemoteRequestProxyConfigView remoteRequestProxyConfigView, AcmeChallenge acmeChallenge) {
+        AcmeChallengeValidation acmeChallengeValidation = new AcmeChallengeValidation();
+        acmeChallengeValidation.setChallengeId(acmeChallenge.getChallengeId());
+        acmeChallengeValidation.setRequestProxyConfigId(remoteRequestProxyConfigView.getId());
+
+        try{
+            try {
+                Collection<String> challengeResponses = processChallenge(acmeChallenge);
+                acmeChallengeValidation.setStatus(ChallengeStatus.VALID);
+                acmeChallengeValidation.setResponses(challengeResponses.toArray(new String[0]));
+    // reject or retry in case of name resolution problems
+    //                    } catch (ChallengeUnknownHostException e) {
+    //                        acmeChallengeValidation.setStatus(ChallengeStatus.INVALID);
+    //                        acmeChallengeValidation.setError(e.getMessage());
+            } catch (ChallengeUnknownHostException |
+                     ChallengeValidationFailedException |
+                     ChallengeDNSException |
+                     ChallengeDNSIdentifierException |
+                     GeneralSecurityException e) {
+                acmeChallengeValidation.setStatus(ChallengeStatus.PENDING);
+                acmeChallengeValidation.setError(e.getMessage());
+            }
+
+            try {
+                String payload = objectMapper.writeValueAsString(acmeChallengeValidation);
+                LOG.debug("serialized acmeChallengeValidation: '{}'", payload);
+
+                String jws = jwsService.buildEmbeddingJWS(payload);
+
+                ResponseEntity<?> response = restTemplate.exchange(
+                    resourceUrlValidation,
+                    HttpMethod.POST,
+                    buildHttpEntityBody(jws),
+                    Void.class);
+
+                LOG.info("challenge update response {}", response);
+            } catch (JOSEException | JsonProcessingException e) {
+                LOG.warn("problem creating JWS for validation payload", e);
+            }
+        } catch (Throwable th) {
+            LOG.warn("unexpected exception in challange processing", th);
+        }
+        currentChallengeMap.remove(acmeChallenge.getChallengeId());
+
     }
 
     private Collection<String> processChallenge(AcmeChallenge acmeChallenge) throws ChallengeUnknownHostException, ChallengeValidationFailedException, ChallengeDNSException, ChallengeDNSIdentifierException, GeneralSecurityException {
@@ -186,6 +217,7 @@ public class ChallengeScheduler {
 
         return new HttpEntity<>(jws, headers);
     }
+
 
 }
 

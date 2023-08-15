@@ -109,7 +109,7 @@
 
         <!-- jhipster-needle-maven-property -->
 
-        <acmeChallengeHandler.version>1.0.1</acmeChallengeHandler.version>
+        <acmeChallengeHandler.version>1.0.2</acmeChallengeHandler.version>
         <bouncyCastle.version>1.76</bouncyCastle.version>
         <nimbus-jose-jwt-version>9.31</nimbus-jose-jwt-version>
 
@@ -1049,6 +1049,18 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>license-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.cyclonedx</groupId>
+                        <artifactId>cyclonedx-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>makeAggregateBom</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
