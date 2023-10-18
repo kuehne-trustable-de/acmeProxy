@@ -52,6 +52,7 @@ public class ChallengeScheduler {
                               @Value("${acme.proxy.dns.port:53}") int resolverPort,
                               @Value("${acme.proxy.http.timeoutMilliSec:1000}") int timeoutMilliSec,
                               @Value("${acme.challenge.http.ports:80}") int[] httpPorts,
+                              @Value("${acme.challenge.http.maxRedirects:0}") int maxRedirects,
                               @Value("${acme.challenge.https.ports:443}") int[] httpsPorts,
                               @Value("${acme.challenge.threads:4}") int nWorkerThreads,
                               JWSService jwsService,
@@ -67,6 +68,7 @@ public class ChallengeScheduler {
             resolverPort,
             timeoutMilliSec,
             httpPorts,
+            maxRedirects,
             httpsPorts);
     }
 
