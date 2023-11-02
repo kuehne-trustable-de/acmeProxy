@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static de.trustable.ca3s.acmeproxy.web.rest.ACMEController.*;
 import static org.springframework.http.CacheControl.noStore;
@@ -46,7 +47,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
 
         this.targetUrl = remoteAcmeServer + "/acme/{realm}/";
         this.requestProxyConfig = requestProxyConfig;
-        this.forwardResponseHeaderSet.addAll(Arrays.asList(forwardResponseHeaders));
+        this.forwardResponseHeaderSet.addAll(Arrays.stream(forwardResponseHeaders).map(String::toLowerCase).collect(Collectors.toSet()));
 
         LOG.debug("remoteAcmeServer: '{}'", remoteAcmeServer);
         LOG.debug("target ACME server Url: '{}'", targetUrl);
@@ -582,10 +583,13 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         HttpHeaders responseHeaders = responseEntity.getHeaders();
         HttpHeaders relevantHeaders = new HttpHeaders();
         for( String headerName: responseHeaders.keySet()){
-            if( forwardResponseHeaderSet.contains(headerName)){
+            if( forwardResponseHeaderSet.contains(headerName.toLowerCase())){
                 List<String> headerList = responseHeaders.get(headerName);
                 if( headerList == null){
                     headerList = new ArrayList<>();
+                }
+                if( LOG.isDebugEnabled()) {
+                    LOG.debug("explicitly forwarding header '{}' with value '{}'", headerName, String.join(",", headerList));
                 }
                 relevantHeaders.addAll(headerName, headerList);
             }

@@ -95,13 +95,69 @@ jhipster:
       enabled: false
       host: localhost
       port: 5000
+
 # ===================================================================
 # Application specific properties
-# Add your own application properties here, see the ApplicationProperties class
-# to have type-safe configuration, like in the JHipsterProperties above
-#
-# More documentation is available at:
-# https://www.jhipster.tech/common-application-properties/
 # ===================================================================
+acme:
+  proxy:
+    # Required: Identification number of this proxy instance
+    # ensure that it's unique if multiple proxies are in use
+    id: 1
 
-# application:
+    # Required: Shared secret to authenticate the proxy and protect the connection to the ca3s server
+    connection:
+      secret: S3cr3t!S
+
+    # For future use, only
+    # connection protection key derivation options. Predefined, static values for now
+#      salt:
+#      iterations:
+#      pbeAlgo:
+
+    # Required: Provide the URL of the ca3s instance serving as ACME backend
+    remote:
+      server: http://localhost:9090
+
+    headers:
+      forward:
+        # Define all headers that need to be forwarded to the ACME client
+        # The header names in this property is case insensitive.
+        # The default set is:
+        # Location,Link,Replay-Nonce,Retry-After,Content-Type
+#        response:
+
+    dns:
+      # Define a DNS resolver host used for validating the DNS challenge
+      # The default resolver is the one used by the JVM
+      # The resolver is not necessarily the same as the one used by the ca3s server!
+#      server:
+
+      # Define a specific port for a given DNS resolver
+      # Default value is 53
+#      port: 53
+
+
+  challenge:
+    # Define the number of worker threads checking the incoming challenges
+    # DEfault value is 4
+    threads: 4
+
+    http:
+      # Define a set of HTTP-01 ports checked for challenges
+      # default if port 80
+      ports: 80, 5544
+
+      # Define the number of redirects followed
+      # the default value is 0, no redirects were followed
+      maxRedirects: 0
+
+      # Define the value of milli seconds for connect, read and socket timeouts for HTTP-01 challenges
+      # Default valu is 1000 mSec
+      timeoutMilliSec: 1000
+
+
+    https:
+      # Define a set of ALPN-01 ports checked for challenges
+      # default if port 443
+      ports: 443
