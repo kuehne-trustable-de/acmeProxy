@@ -137,7 +137,6 @@ acme:
       # Default value is 53
 #      port: 53
 
-
   challenge:
     # Define the number of worker threads checking the incoming challenges
     # DEfault value is 4
@@ -153,7 +152,8 @@ acme:
       maxRedirects: 0
 
       # Define the value of milli seconds for connect, read and socket timeouts for HTTP-01 challenges
-      # Default valu is 1000 mSec
+      # Too low values lead to missed responses, too high values slow down the server response in case
+      # Default value is 1000 mSec
       timeoutMilliSec: 1000
 
 
@@ -161,3 +161,4 @@ acme:
       # Define a set of ALPN-01 ports checked for challenges
       # default if port 443
       ports: 443
+
