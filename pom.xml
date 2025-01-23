@@ -110,7 +110,7 @@
         <!-- jhipster-needle-maven-property -->
 
         <acmeChallengeHandler.version>1.0.4</acmeChallengeHandler.version>
-        <bouncyCastle.version>1.76</bouncyCastle.version>
+        <bouncyCastle.version>1.78</bouncyCastle.version>
         <nimbus-jose-jwt-version>9.37.3</nimbus-jose-jwt-version>
 
         <maven-checkstyle.version>3.2.2</maven-checkstyle.version>
