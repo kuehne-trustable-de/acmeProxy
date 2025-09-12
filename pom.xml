@@ -79,10 +79,10 @@
         <!-- The spring-boot version should match the one managed by
         https://mvnrepository.com/artifact/tech.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
         <spring-boot.version>2.7.18</spring-boot.version>
-        <archunit-junit5.version>1.1.0</archunit-junit5.version>
+        <archunit-junit5.version>1.4.1</archunit-junit5.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <!-- Plugin versions -->
-        <maven-clean-plugin.version>3.3.2</maven-clean-plugin.version>
+        <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
         <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
@@ -97,7 +97,7 @@
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
         <modernizer-maven-plugin.version>2.4.0</modernizer-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
-        <jib-maven-plugin.version>3.4.5</jib-maven-plugin.version>
+        <jib-maven-plugin.version>3.4.6</jib-maven-plugin.version>
         <jib-maven-plugin.image>eclipse-temurin:11-jre-focal</jib-maven-plugin.image>
         <jib-maven-plugin.architecture>amd64</jib-maven-plugin.architecture>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
@@ -111,7 +111,7 @@
 
         <acmeChallengeHandler.version>1.0.4</acmeChallengeHandler.version>
         <bouncyCastle.version>1.80</bouncyCastle.version>
-        <nimbus-jose-jwt-version>9.37.3</nimbus-jose-jwt-version>
+        <nimbus-jose-jwt-version>9.37.4</nimbus-jose-jwt-version>
 
         <maven-checkstyle.version>3.2.2</maven-checkstyle.version>
         <maven-source.version>3.3.1</maven-source.version>
