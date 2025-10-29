@@ -104,7 +104,7 @@
         <properties-maven-plugin.version>1.2.1</properties-maven-plugin.version>
         <sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
 
-        <undertow.version>2.3.19.Final</undertow.version>
+        <undertow.version>2.3.20.Final</undertow.version>
         <xnio.version>3.8.16.Final</xnio.version>
 
         <!-- jhipster-needle-maven-property -->
