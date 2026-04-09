@@ -28,13 +28,16 @@ package de.trustable.ca3s.acmeproxy.service.dto.problem;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
+import java.io.Serial;
+
 @NotThreadSafe
 public class AcmeProblemException extends RuntimeException {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = -3421378539503434188L;
+    /**
+     *
+     */
+    @Serial
+    private static final long serialVersionUID = -3421378539503434188L;
 
 	private final ProblemDetail problem;
 

@@ -1,10 +1,12 @@
 package de.trustable.ca3s.acmeproxy.service.dto;
 
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 
 public class RemoteRequestProxyConfigView implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private Long id;

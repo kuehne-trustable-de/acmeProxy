@@ -19,9 +19,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Generated;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.annotation.Generated;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-03-27T13:33:05.045561200+02:00[Europe/Berlin]")
 @Validated
@@ -48,8 +48,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         value = "/acme/{realm}/acct/changeKey",
         produces = { "*/*" },
         consumes = { "application/jose+json" }
@@ -79,8 +78,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         value = "/acme/{realm}/newOrder",
         produces = { "*/*" },
         consumes = { "application/jws", "application/jose+json" }
@@ -110,8 +108,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         value = "/acme/{realm}/newAccount",
         produces = { "*/*" },
         consumes = { "application/jws", "application/jose+json" }
@@ -142,8 +139,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         value = "/acme/{realm}/order/finalize/{orderId}",
         produces = { "application/json" },
         consumes = { "application/jose+json" }
@@ -176,8 +172,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         value = "/acme/{realm}/acct/{accountId}/orders",
         produces = { "*/*" },
         consumes = { "application/jose+json" }
@@ -209,8 +204,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.GET,
+    @GetMapping(
         value = "/acme/{realm}/authorization/{authorizationId}",
         produces = { "application/json" }
     )
@@ -239,8 +233,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.GET,
+    @GetMapping(
         value = "/acme/{realm}/cert/{certId}",
         produces = { "*/*" }
     )
@@ -269,8 +262,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.GET,
+    @GetMapping(
         value = "/acme/{realm}/challenge/{challengeId}",
         produces = { "application/json" }
     )
@@ -298,8 +290,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.GET,
+    @GetMapping(
         value = "/acme/{realm}/directory",
         produces = { "application/json" }
     )
@@ -326,8 +317,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         value = "/acme/{realm}/directory",
         produces = { "application/json" }
     )
@@ -356,8 +346,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         value = "/acme/{realm}/order/{orderId}",
         produces = { "application/json" },
         consumes = { "application/jose+json" }
@@ -389,8 +378,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         value = "/acme/{realm}/authorization/{authorizationId}",
         produces = { "application/json" },
         consumes = { "application/jose+json" }
@@ -422,8 +410,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         value = "/acme/{realm}/challenge/{challengeId}",
         produces = { "application/json" },
         consumes = { "application/jose+json" }
@@ -457,8 +444,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         value = "/acme/{realm}/cert/{certId}",
         produces = { "*/*" },
         consumes = { "application/jose+json", "application/pkix-cert" }
@@ -491,8 +477,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         value = "/acme/{realm}/cert/revoke",
         produces = { "*/*" },
         consumes = { "application/jose+json" }
@@ -523,8 +508,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         value = "/acme/{realm}/acct/{accountId}",
         produces = { "*/*" },
         consumes = { "application/jose+json" }
@@ -554,8 +538,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.GET,
+    @GetMapping(
         value = "/acme/{realm}/newNonce",
         produces = { "*/*" }
     )
@@ -582,8 +565,7 @@ public interface AcmeApi {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
+    @PostMapping(
         value = "/acme/{realm}/newNonce",
         produces = { "*/*" }
     )

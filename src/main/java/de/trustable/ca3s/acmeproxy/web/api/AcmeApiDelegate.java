@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 import java.util.Optional;
 
 /**

@@ -28,12 +28,15 @@ package de.trustable.ca3s.acmeproxy.service.dto.problem;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
+import java.io.Serial;
+
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @NotThreadSafe
 public final class InvalidAcmeMessageException extends AcmeMessageException {
 
-  private static final long serialVersionUID = 2563474226688634942L;
+    @Serial
+    private static final long serialVersionUID = 2563474226688634942L;
 
   private final String title;
 

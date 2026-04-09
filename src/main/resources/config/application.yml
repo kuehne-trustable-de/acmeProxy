@@ -29,11 +29,6 @@ management:
       mode: full
 
   metrics:
-    export:
-      # Prometheus is the default metrics backend
-      prometheus:
-        enabled: true
-        step: 60
     enable:
       http: true
       jvm: true
@@ -47,11 +42,13 @@ management:
         all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
     tags:
       application: ${spring.application.name}
-    web:
-      server:
-        request:
-          autotime:
-            enabled: true
+
+  # This property is deprecated: Should be applied at the ObservationRegistry level.
+            # enabled: true
+
+  prometheus.metrics.export.enabled: true
+
+  prometheus.metrics.export.step: 60
 
 spring:
   application:

@@ -1,5 +1,6 @@
 package de.trustable.ca3s.acmeproxy.service.dto;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -9,6 +10,7 @@ import java.time.Instant;
 
 public class AcmeChallenge implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private Long challengeId;

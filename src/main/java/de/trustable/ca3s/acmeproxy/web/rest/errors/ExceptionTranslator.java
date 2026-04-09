@@ -20,9 +20,9 @@ import org.zalando.problem.violations.ConstraintViolationProblem;
 import tech.jhipster.config.JHipsterConstants;
 import tech.jhipster.web.util.HeaderUtil;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
+import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
@@ -69,9 +69,9 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .withTitle(problem.getTitle())
             .with(PATH_KEY, request.getNativeRequest(HttpServletRequest.class).getRequestURI());
 
-        if (problem instanceof ConstraintViolationProblem) {
+        if (problem instanceof ConstraintViolationProblem violationProblem) {
             builder
-                .with(VIOLATIONS_KEY, ((ConstraintViolationProblem) problem).getViolations())
+                .with(VIOLATIONS_KEY, violationProblem.getViolations())
                 .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION);
         } else {
             builder

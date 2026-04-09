@@ -2,8 +2,8 @@ package de.trustable.ca3s.acmeproxy.service.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.annotation.Generated;
-import javax.validation.Valid;
+import jakarta.annotation.Generated;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.Objects;
 

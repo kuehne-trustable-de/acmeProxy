@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import tech.jhipster.config.JHipsterConstants;
 import tech.jhipster.config.JHipsterProperties;
 
-import javax.servlet.*;
+import jakarta.servlet.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

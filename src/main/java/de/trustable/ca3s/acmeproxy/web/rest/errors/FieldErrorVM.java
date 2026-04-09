@@ -1,9 +1,11 @@
 package de.trustable.ca3s.acmeproxy.web.rest.errors;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class FieldErrorVM implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final String objectName;
