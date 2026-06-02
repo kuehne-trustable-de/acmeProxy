@@ -57,7 +57,7 @@ server:
     mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
     min-response-size: 1024
   ssl:
-    key-store: classpath:config/tls/laptop-2iguatf5.p12
+    key-store: classpath:config/tls/akuehne-ThinkPad-E16-Gen-1.p12
     key-store-password: S3cr3t!S
     key-alias: alias
     key-store-type: PKCS12

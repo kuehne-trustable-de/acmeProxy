@@ -1,7 +1,6 @@
 package de.trustable.ca3s.acmeproxy.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JOSEException;
 import de.trustable.ca3s.acmeproxy.config.RequestProxyConfig;
 import de.trustable.ca3s.acmeproxy.service.dto.*;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
+import tools.jackson.core.JacksonException;
 
 import java.security.GeneralSecurityException;
 import java.time.Instant;
@@ -133,7 +133,7 @@ public class ChallengeScheduler {
                 LOG.info("ca3s server not accessible");
             }
         } catch (HttpClientErrorException httpClientErrorException) {
-            if (httpClientErrorException.getRawStatusCode() == 404) {
+            if (httpClientErrorException.getStatusCode().value() == 404) {
                 LOG.debug("no pending challenges");
             } else {
                 LOG.warn("problem retrieving pending challenges: {}", httpClientErrorException.getMessage());
@@ -177,7 +177,7 @@ public class ChallengeScheduler {
                     Void.class);
 
                 LOG.info("challenge update response {}", response);
-            } catch (JOSEException | JsonProcessingException e) {
+            } catch (JOSEException | JacksonException e) {
                 LOG.warn("problem creating JWS for validation payload", e);
             }
         } catch (Throwable th) {

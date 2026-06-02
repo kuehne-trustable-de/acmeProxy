@@ -2,9 +2,9 @@ package de.trustable.ca3s.acmeproxy.web.api;
 
 
 import de.trustable.ca3s.acmeproxy.service.api.dto.DirectoryResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import jakarta.annotation.Generated;
@@ -31,7 +31,7 @@ public interface AcmeApiDelegate {
      * @see AcmeApi#changeKey
      */
     default ResponseEntity<Object> changeKey(String realm,
-                                             String body, MultiValueMap<String, String> headers) {
+                                             String body, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -46,7 +46,7 @@ public interface AcmeApiDelegate {
      * @see AcmeApi#consumingPostedJws1
      */
     default ResponseEntity<Object> consumingPostedJws1(String realm,
-                                                       String body, MultiValueMap<String, String> headers) {
+                                                       String body, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -61,7 +61,7 @@ public interface AcmeApiDelegate {
      * @see AcmeApi#consumingPostedJws2
      */
     default ResponseEntity<Object> consumingPostedJws2(String realm,
-                                                       String body, MultiValueMap<String, String> headers) {
+                                                       String body, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -78,7 +78,7 @@ public interface AcmeApiDelegate {
      */
     default ResponseEntity<Object> finalizeOrder(Long orderId,
                                                  String realm,
-                                                 String body, MultiValueMap<String, String> headers) {
+                                                 String body, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -97,7 +97,7 @@ public interface AcmeApiDelegate {
     default ResponseEntity<Object> getAccountOrders(Long accountId,
                                                     String realm,
                                                     String body,
-                                                    String cursor, MultiValueMap<String, String> headers) {
+                                                    String cursor, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -111,7 +111,7 @@ public interface AcmeApiDelegate {
      * @see AcmeApi#getAuthorization
      */
     default ResponseEntity<Object> getAuthorization(Long authorizationId,
-        String realm, MultiValueMap<String, String> headers) {
+        String realm, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -125,7 +125,7 @@ public interface AcmeApiDelegate {
      * @see AcmeApi#getCertificatePKIX
      */
     default ResponseEntity<Object> getCertificatePKIX(Long certId,
-        String realm, MultiValueMap<String, String> headers) {
+        String realm, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -139,7 +139,7 @@ public interface AcmeApiDelegate {
      * @see AcmeApi#getChallenge
      */
     default ResponseEntity<Object> getChallenge(Long challengeId,
-        String realm, MultiValueMap<String, String> headers) {
+        String realm, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -151,7 +151,7 @@ public interface AcmeApiDelegate {
      * @return OK (status code 200)
      * @see AcmeApi#getDirectory
      */
-    default ResponseEntity<DirectoryResponse> getDirectory(String realm, MultiValueMap<String, String> headers) {
+    default ResponseEntity<DirectoryResponse> getDirectory(String realm, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -162,7 +162,7 @@ public interface AcmeApiDelegate {
      * @return OK (status code 200)
      * @see AcmeApi#getDirectory1
      */
-    default ResponseEntity<DirectoryResponse> getDirectoryPost(String realm, MultiValueMap<String, String> headers) {
+    default ResponseEntity<DirectoryResponse> getDirectoryPost(String realm, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -178,7 +178,7 @@ public interface AcmeApiDelegate {
      */
     default ResponseEntity<Object> postAsGetOrder(Long orderId,
                                                   String realm,
-                                                  String body, MultiValueMap<String, String> headers) {
+                                                  String body, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -195,7 +195,7 @@ public interface AcmeApiDelegate {
      */
     default ResponseEntity<Object> postAuthorization(Long authorizationId,
                                                      String realm,
-                                                     String body, MultiValueMap<String, String> headers) {
+                                                     String body, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -212,7 +212,7 @@ public interface AcmeApiDelegate {
      */
     default ResponseEntity<Object> postChallenge(Long challengeId,
                                                  String realm,
-                                                 String body, MultiValueMap<String, String> headers) {
+                                                 String body, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -233,7 +233,7 @@ public interface AcmeApiDelegate {
                                                   Long certId,
                                                   String realm,
                                                   String body,
-                                                  String accept, MultiValueMap<String, String> headers) {
+                                                  String accept, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -248,7 +248,7 @@ public interface AcmeApiDelegate {
      * @see AcmeApi#revokeCertificate
      */
     default ResponseEntity<?> revokeCertificate(String realm,
-                                                String body, MultiValueMap<String, String> headers) {
+                                                String body, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -265,7 +265,7 @@ public interface AcmeApiDelegate {
      */
     default ResponseEntity<?> updateAccount(Long accountId,
                                             String realm,
-                                            String body, MultiValueMap<String, String> headers) {
+                                            String body, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -277,7 +277,7 @@ public interface AcmeApiDelegate {
      * @return OK (status code 200)
      * @see AcmeApi#viaGet
      */
-    default ResponseEntity<String> viaGet(String realm, MultiValueMap<String, String> headers) {
+    default ResponseEntity<String> viaGet(String realm, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -289,7 +289,7 @@ public interface AcmeApiDelegate {
      * @return OK (status code 200)
      * @see AcmeApi#viaGet
      */
-    default ResponseEntity<String> viaPost(String realm, MultiValueMap<String, String> headers) {
+    default ResponseEntity<String> viaPost(String realm, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -301,7 +301,7 @@ public interface AcmeApiDelegate {
      * @return OK (status code 200)
      * @see AcmeApi#viaHead
      */
-    default ResponseEntity<String> viaHead(String realm, MultiValueMap<String, String> headers) {
+    default ResponseEntity<String> viaHead(String realm, HttpHeaders headers) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

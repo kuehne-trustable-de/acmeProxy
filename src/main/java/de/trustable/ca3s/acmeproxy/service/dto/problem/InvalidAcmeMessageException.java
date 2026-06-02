@@ -26,39 +26,36 @@
 
 package de.trustable.ca3s.acmeproxy.service.dto.problem;
 
-import javax.annotation.concurrent.NotThreadSafe;
-
 import java.io.Serial;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
-@NotThreadSafe
 public final class InvalidAcmeMessageException extends AcmeMessageException {
 
     @Serial
     private static final long serialVersionUID = 2563474226688634942L;
 
-  private final String title;
+    private final String title;
 
-  public InvalidAcmeMessageException(final String message, final String acmeMessage, final Exception cause) {
-    super(message + (isEmpty(acmeMessage) ? "" : " Message: '" + acmeMessage + "'"), cause);
-    this.title = message;
-  }
+    public InvalidAcmeMessageException(final String message, final String acmeMessage, final Exception cause) {
+        super(message + (isEmpty(acmeMessage) ? "" : " Message: '" + acmeMessage + "'"), cause);
+        this.title = message;
+    }
 
-  public InvalidAcmeMessageException(final String title, final Exception cause) {
-    this(title, null, cause);
-  }
+    public InvalidAcmeMessageException(final String title, final Exception cause) {
+        this(title, null, cause);
+    }
 
-  public InvalidAcmeMessageException(final String message, final String acmeMessage) {
-    this(message, acmeMessage, null);
-  }
+    public InvalidAcmeMessageException(final String message, final String acmeMessage) {
+        this(message, acmeMessage, null);
+    }
 
-  public InvalidAcmeMessageException(final String message) {
-    this(message, null, null);
-  }
+    public InvalidAcmeMessageException(final String message) {
+        this(message, null, null);
+    }
 
-  public final String getTitle() {
-    return title;
-  }
+    public String getTitle() {
+        return title;
+    }
 
 }

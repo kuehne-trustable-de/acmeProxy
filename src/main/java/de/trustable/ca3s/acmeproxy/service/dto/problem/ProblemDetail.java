@@ -29,10 +29,10 @@ package de.trustable.ca3s.acmeproxy.service.dto.problem;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.Immutable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import javax.annotation.concurrent.Immutable;
 import java.net.URI;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;

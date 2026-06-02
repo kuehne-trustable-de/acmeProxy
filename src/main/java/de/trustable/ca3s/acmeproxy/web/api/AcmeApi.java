@@ -14,8 +14,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,7 +56,7 @@ public interface AcmeApi {
     default ResponseEntity<Object> changeKey(
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
         @Parameter(name = "body", description = "", required = true) @Valid @RequestBody String body,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().changeKey(realm, body, headers);
     }
@@ -86,7 +86,7 @@ public interface AcmeApi {
     default ResponseEntity<Object> consumingPostedJws1(
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
         @Parameter(name = "body", description = "", required = true) @Valid @RequestBody String body,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().consumingPostedJws1(realm, body, headers);
     }
@@ -116,7 +116,7 @@ public interface AcmeApi {
     default ResponseEntity<Object> consumingPostedJws2(
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
         @Parameter(name = "body", description = "", required = true) @Valid @RequestBody String body,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().consumingPostedJws2(realm, body, headers);
     }
@@ -148,7 +148,7 @@ public interface AcmeApi {
         @Parameter(name = "orderId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("orderId") Long orderId,
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
         @Parameter(name = "body", description = "", required = true) @Valid @RequestBody String body,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().finalizeOrder(orderId, realm, body, headers);
     }
@@ -182,7 +182,7 @@ public interface AcmeApi {
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
         @Parameter(name = "body", description = "", required = true) @Valid @RequestBody String body,
         @Parameter(name = "cursor", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "cursor", required = false, defaultValue = "0") String cursor,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().getAccountOrders(accountId, realm, body, cursor, headers);
     }
@@ -211,7 +211,7 @@ public interface AcmeApi {
     default ResponseEntity<Object> getAuthorization(
         @Parameter(name = "authorizationId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("authorizationId") Long authorizationId,
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().getAuthorization(authorizationId, realm, headers);
     }
@@ -240,7 +240,7 @@ public interface AcmeApi {
     default ResponseEntity<Object> getCertificatePKIX(
         @Parameter(name = "certId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("certId") Long certId,
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().getCertificatePKIX(certId, realm, headers);
     }
@@ -269,7 +269,7 @@ public interface AcmeApi {
     default ResponseEntity<Object> getChallenge(
         @Parameter(name = "challengeId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("challengeId") Long challengeId,
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().getChallenge(challengeId, realm, headers);
     }
@@ -296,7 +296,7 @@ public interface AcmeApi {
     )
     default ResponseEntity<DirectoryResponse> getDirectory(
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().getDirectory(realm, headers);
     }
@@ -323,7 +323,7 @@ public interface AcmeApi {
     )
     default ResponseEntity<DirectoryResponse> getDirectory1(
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().getDirectoryPost(realm, headers);
     }
@@ -355,7 +355,7 @@ public interface AcmeApi {
         @Parameter(name = "orderId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("orderId") Long orderId,
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
         @Parameter(name = "body", description = "", required = true) @Valid @RequestBody String body,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().postAsGetOrder(orderId, realm, body, headers);
     }
@@ -387,7 +387,7 @@ public interface AcmeApi {
         @Parameter(name = "authorizationId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("authorizationId") Long authorizationId,
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
         @Parameter(name = "body", description = "", required = true) @Valid @RequestBody String body,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().postAuthorization(authorizationId, realm, body, headers);
     }
@@ -419,7 +419,7 @@ public interface AcmeApi {
         @Parameter(name = "challengeId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("challengeId") Long challengeId,
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
         @Parameter(name = "body", description = "", required = true) @Valid @RequestBody String body,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().postChallenge(challengeId, realm, body, headers);
     }
@@ -455,7 +455,7 @@ public interface AcmeApi {
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
         @Parameter(name = "body", description = "", required = true) @Valid @RequestBody String body,
         @Parameter(name = "Accept", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "Accept", required = false, defaultValue = "application/pem-certificate-chain") String accept,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().retrieveCertificate(contentType, certId, realm, body, accept, headers);
     }
@@ -485,7 +485,7 @@ public interface AcmeApi {
     default ResponseEntity<?> revokeCertificate(
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
         @Parameter(name = "body", description = "", required = true) @Valid @RequestBody String body,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().revokeCertificate(realm, body, headers);
     }
@@ -517,7 +517,7 @@ public interface AcmeApi {
         @Parameter(name = "accountId", description = "", required = true, in = ParameterIn.PATH) @PathVariable("accountId") Long accountId,
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
         @Parameter(name = "body", description = "", required = true) @Valid @RequestBody String body,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().updateAccount(accountId, realm, body, headers);
     }
@@ -544,7 +544,7 @@ public interface AcmeApi {
     )
     default ResponseEntity<String> viaGet(
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         ResponseEntity<String> responseEntity = getDelegate().viaGet(realm, headers);
         return responseEntity;
@@ -571,7 +571,7 @@ public interface AcmeApi {
     )
     default ResponseEntity<String> viaPost(
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().viaPost(realm,headers);
     }
@@ -591,6 +591,19 @@ public interface AcmeApi {
             })
         }
     )
+/*
+    @RequestMapping(
+        method = RequestMethod.HEAD,
+        value = "/acme/{realm}/newNonce",
+        produces = { "*//*" }
+    )
+    default ResponseEntity<String> viaHead(
+        @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
+        @RequestHeader HttpHeaders headers
+    ) {
+        return getDelegate().viaHead(realm, headers);
+    }
+*/
     @RequestMapping(
         method = RequestMethod.HEAD,
         value = "/acme/{realm}/newNonce",
@@ -598,8 +611,10 @@ public interface AcmeApi {
     )
     default ResponseEntity<String> viaHead(
         @Parameter(name = "realm", description = "", required = true, in = ParameterIn.PATH) @PathVariable("realm") String realm,
-        @RequestHeader MultiValueMap<String, String> headers
+        @RequestHeader HttpHeaders headers
     ) {
         return getDelegate().viaHead(realm, headers);
     }
+
+
 }

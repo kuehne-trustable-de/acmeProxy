@@ -14,9 +14,6 @@ import java.util.Objects;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-03-27T13:33:05.045561200+02:00[Europe/Berlin]")
 public class DirectoryResponse {
 
-  @JsonProperty("revokeUri")
-  private URI revokeUri;
-
   @JsonProperty("newNonce")
   private URI newNonce;
 
@@ -34,24 +31,6 @@ public class DirectoryResponse {
 
   @JsonProperty("revokeCert")
   private URI revokeCert;
-
-  public DirectoryResponse revokeUri(URI revokeUri) {
-    this.revokeUri = revokeUri;
-    return this;
-  }
-
-  /**
-   * Get revokeUri
-   * @return revokeUri
-  */
-  @Valid
-  public URI getRevokeUri() {
-    return revokeUri;
-  }
-
-  public void setRevokeUri(URI revokeUri) {
-    this.revokeUri = revokeUri;
-  }
 
   public DirectoryResponse newNonce(URI newNonce) {
     this.newNonce = newNonce;
@@ -170,7 +149,7 @@ public class DirectoryResponse {
       return false;
     }
     DirectoryResponse directoryResponse = (DirectoryResponse) o;
-    return Objects.equals(this.revokeUri, directoryResponse.revokeUri) &&
+    return
         Objects.equals(this.newNonce, directoryResponse.newNonce) &&
         Objects.equals(this.newAccount, directoryResponse.newAccount) &&
         Objects.equals(this.newOrder, directoryResponse.newOrder) &&
@@ -181,14 +160,13 @@ public class DirectoryResponse {
 
   @Override
   public int hashCode() {
-    return Objects.hash(revokeUri, newNonce, newAccount, newOrder, newAuthz, keyChange, revokeCert);
+    return Objects.hash(newNonce, newAccount, newOrder, newAuthz, keyChange, revokeCert);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class DirectoryResponse {\n");
-    sb.append("    revokeUri: ").append(toIndentedString(revokeUri)).append("\n");
     sb.append("    newNonce: ").append(toIndentedString(newNonce)).append("\n");
     sb.append("    newAccount: ").append(toIndentedString(newAccount)).append("\n");
     sb.append("    newOrder: ").append(toIndentedString(newOrder)).append("\n");

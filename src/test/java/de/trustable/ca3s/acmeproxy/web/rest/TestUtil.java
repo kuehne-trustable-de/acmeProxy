@@ -1,9 +1,8 @@
 package de.trustable.ca3s.acmeproxy.web.rest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
@@ -24,11 +23,9 @@ public final class TestUtil {
     private static final ObjectMapper mapper = createObjectMapper();
 
     private static ObjectMapper createObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false);
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-        mapper.registerModule(new JavaTimeModule());
-        return mapper;
+        return JsonMapper.builder()
+            .changeDefaultPropertyInclusion(incl -> incl.withContentInclusion(JsonInclude.Include.NON_EMPTY).withValueInclusion(JsonInclude.Include.NON_EMPTY))
+            .build();
     }
 
     /**

@@ -17,8 +17,7 @@ spring:
   application:
     name: ca3sAcmeProxy
   jackson:
-    serialization:
-      write-durations-as-timestamps: false
+      datatype.datetime.write-durations-as-timestamps: false
   mail:
     host: localhost
   main:

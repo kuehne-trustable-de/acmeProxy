@@ -26,10 +26,10 @@
 
 package de.trustable.ca3s.acmeproxy.config.advice;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.annotation.Immutable;
+import tools.jackson.databind.ObjectMapper;
 import de.trustable.ca3s.acmeproxy.service.dto.problem.AcmeProblemException;
 import de.trustable.ca3s.acmeproxy.service.dto.problem.ProblemDetail;
-import de.trustable.ca3s.acmeproxy.web.api.AcmeApiImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -39,9 +39,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import tools.jackson.core.JacksonException;
 
-import javax.annotation.concurrent.Immutable;
-import java.io.IOException;
 import java.net.URI;
 
 import static de.trustable.ca3s.acmeproxy.web.api.AcmeApiImpl.ACME_ERROR_URI_NAMESPACE;
@@ -88,7 +87,7 @@ public final class AcmeProblemAdvice {
             final ProblemDetail problem = mapper.readValue(exception.getResponseBodyAsByteArray(), ProblemDetail.class);
             final HttpStatus status = problem.getStatus();
             return ResponseEntity.status(status).contentType(APPLICATION_PROBLEM_JSON).body(problem);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             final ProblemDetail problem2 = new ProblemDetail(URI_INTERNAL_PROBLEM,
                 exception.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR, "", NO_INSTANCE);
@@ -105,7 +104,7 @@ public final class AcmeProblemAdvice {
             final ProblemDetail problem = mapper.readValue(exception.getResponseBodyAsByteArray(), ProblemDetail.class);
             final HttpStatus status = problem.getStatus();
             return ResponseEntity.status(status).contentType(APPLICATION_PROBLEM_JSON).body(problem);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             final ProblemDetail problem2 = new ProblemDetail(URI_INTERNAL_PROBLEM,
                 exception.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR, "", NO_INSTANCE);

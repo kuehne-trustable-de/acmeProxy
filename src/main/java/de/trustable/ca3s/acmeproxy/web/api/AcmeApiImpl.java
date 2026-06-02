@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
+
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
@@ -66,7 +67,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
      */
     public ResponseEntity<Object> changeKey(String realm,
                                             String body,
-                                            MultiValueMap<String, String> headers) {
+                                            HttpHeaders headers) {
 
         String resourceUrl = targetUrl + "acct/changeKey";
         checkRealm(realm, resourceUrl);
@@ -88,7 +89,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
      */
     public ResponseEntity<Object> consumingPostedJws1(String realm,
                                                       String body,
-                                                      MultiValueMap<String, String> headers) {
+                                                      HttpHeaders headers) {
 
         String resourceUrl = targetUrl + "newOrder";
         checkRealm(realm, resourceUrl);
@@ -110,7 +111,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
      */
     public ResponseEntity<Object> consumingPostedJws2(String realm,
                                                       String body,
-                                                      MultiValueMap<String, String> headers) {
+                                                      HttpHeaders headers) {
         String resourceUrl = targetUrl + "newAccount";
 
         checkRealm(realm, resourceUrl);
@@ -134,7 +135,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
     public ResponseEntity<Object> finalizeOrder(Long orderId,
                                                 String realm,
                                                 String body,
-                                                MultiValueMap<String, String> headers) {
+                                                HttpHeaders headers) {
 
         String resourceUrl = targetUrl + "order/finalize/{orderId}";
         checkRealm(realm, resourceUrl);
@@ -160,7 +161,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
                                                    String realm,
                                                    String body,
                                                    String cursor,
-                                                   MultiValueMap<String, String> headers) {
+                                                   HttpHeaders headers) {
 
         String resourceUrl = targetUrl + "acct/{accountId}/orders";
         checkRealm(realm, resourceUrl);
@@ -182,7 +183,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
      */
     public ResponseEntity<Object> getAuthorization(Long authorizationId,
                                                    String realm,
-                                                   MultiValueMap<String, String> headers) {
+                                                   HttpHeaders headers) {
 
         String resourceUrl = targetUrl + "authorization/{authorizationId}";
         checkRealm(realm, resourceUrl);
@@ -204,7 +205,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
      */
     public ResponseEntity<Object> getCertificatePKIX(Long certId,
                                                      String realm,
-                                                     MultiValueMap<String, String> headers) {
+                                                     HttpHeaders headers) {
         String resourceUrl = targetUrl + "cert/{certId}";
         checkRealm(realm, resourceUrl);
         LOG.debug("forwarding {}/cert/{}", realm, certId);
@@ -226,7 +227,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
      */
     public ResponseEntity<Object> getChallenge(Long challengeId,
                                                String realm,
-                                               MultiValueMap<String, String> headers) {
+                                               HttpHeaders headers) {
         String resourceUrl = targetUrl + "challenge/{challengeId}";
         checkRealm(realm, resourceUrl);
         LOG.debug("forwarding {}/challenge/{}", realm, challengeId);
@@ -245,7 +246,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
      * @see AcmeApi#getDirectory
      */
     public ResponseEntity<DirectoryResponse> getDirectory(String realm,
-                                                          MultiValueMap<String, String> headers) {
+                                                          HttpHeaders headers) {
         String resourceUrl = targetUrl + "directory";
         checkRealm(realm, resourceUrl);
         LOG.debug("forwarding GET {}/directory", realm);
@@ -267,7 +268,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
      * @see AcmeApi#getDirectory1
      */
     public ResponseEntity<DirectoryResponse> getDirectoryPost(String realm,
-                                                              MultiValueMap<String, String> headers) {
+                                                              HttpHeaders headers) {
         String resourceUrl = targetUrl + "directory";
         checkRealm(realm, resourceUrl);
         LOG.debug("forwarding POST {}/directory", realm);
@@ -291,7 +292,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
     public ResponseEntity<Object> postAsGetOrder(Long orderId,
                                                  String realm,
                                                  String body,
-                                                 MultiValueMap<String, String> headers) {
+                                                 HttpHeaders headers) {
         String resourceUrl = targetUrl + "order/{orderId}";
         checkRealm(realm, resourceUrl);
         LOG.debug("forwarding {}/order/{}", realm, orderId);
@@ -314,7 +315,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
     public ResponseEntity<Object> postAuthorization(Long authorizationId,
                                                     String realm,
                                                     String body,
-                                                    MultiValueMap<String, String> headers) {
+                                                    HttpHeaders headers) {
         String resourceUrl = targetUrl + "authorization/{authorizationId}";
         checkRealm(realm, resourceUrl);
         LOG.debug("forwarding {}/authorization/{}", realm, authorizationId);
@@ -337,7 +338,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
     public ResponseEntity<Object> postChallenge(Long challengeId,
                                                 String realm,
                                                 String body,
-                                                MultiValueMap<String, String> headers) {
+                                                HttpHeaders headers) {
         String resourceUrl = targetUrl + "challenge/{challengeId}";
         checkRealm(realm, resourceUrl);
         LOG.debug("forwarding {}/challenge/{}", realm, challengeId);
@@ -364,7 +365,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
                                                  String realm,
                                                  String body,
                                                  String accept,
-                                                 MultiValueMap<String, String> headers) {
+                                                 HttpHeaders headers) {
         String resourceUrl = targetUrl + "cert/{certId}";
         checkRealm(realm, resourceUrl);
 
@@ -401,7 +402,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
      */
     public ResponseEntity<?> revokeCertificate(String realm,
                                                String body,
-                                               MultiValueMap<String, String> headers) {
+                                               HttpHeaders headers) {
         String resourceUrl = targetUrl + "cert/revoke";
         checkRealm(realm, resourceUrl);
         LOG.debug("forwarding {}/cert/revoke", realm);
@@ -424,7 +425,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
     public ResponseEntity<?> updateAccount(Long accountId,
                                            String realm,
                                            String body,
-                                           MultiValueMap<String, String> headers) {
+                                           HttpHeaders headers) {
         String resourceUrl = targetUrl + "acct/{accountId}";
         checkRealm(realm, resourceUrl);
         LOG.debug("forwarding {}/acct/{}", realm, accountId);
@@ -462,7 +463,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
      * @see AcmeApi#viaPost
      */
     public ResponseEntity<String> viaPost(String realm,
-                                          MultiValueMap<String, String> headers) {
+                                          HttpHeaders headers) {
         String resourceUrl = targetUrl + "newNonce";
         checkRealm(realm, resourceUrl);
         ResponseEntity<String> responseEntity =
@@ -480,7 +481,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
      * @return OK (status code 200)
      * @see AcmeApi#viaHead
      */
-    public ResponseEntity<String> viaHead(String realm, MultiValueMap<String, String> headers) {
+    public ResponseEntity<String> viaHead(String realm, HttpHeaders headers) {
 
         String resourceUrl = targetUrl + "newNonce";
         checkRealm(realm, resourceUrl);
@@ -499,7 +500,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
     <T> ResponseEntity<T> logResponseEntity(final ResponseEntity<T> responseEntity) {
 
         HttpHeaders headers = responseEntity.getHeaders();
-        for( String header : responseEntity.getHeaders().keySet()) {
+        for( String header : responseEntity.getHeaders().toSingleValueMap().keySet()) {
             LOG.debug("response header {} : {}", header, headers.get(header));
         }
 
@@ -523,24 +524,25 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         return new HttpEntity<>(headers);
     }
 
-    HttpEntity buildHttpEntity(final MultiValueMap<String, String> callerHeaders) {
+    HttpEntity buildHttpEntity(final HttpHeaders callerHeaders) {
 
         HttpHeaders headers = processHttpHeaders(callerHeaders);
 
         return new HttpEntity<>(headers);
     }
 
-    HttpEntity buildHttpEntity(final MultiValueMap<String, String> callerHeaders, final String body) {
+    HttpEntity buildHttpEntity(final HttpHeaders callerHeaders, final String body) {
 
         HttpHeaders headers = processHttpHeaders(callerHeaders);
 
         return new HttpEntity<>(body, headers);
     }
 
-    private HttpHeaders processHttpHeaders(MultiValueMap<String, String> callerHeaders) {
+    private HttpHeaders processHttpHeaders(final HttpHeaders callerHeaders) {
         boolean hasAcceptHeader = false;
-        for(String headerName: callerHeaders.keySet()){
-            if( callerHeaders.containsKey(headerName)) {
+
+        for(String headerName: callerHeaders.toSingleValueMap().keySet()){
+            if( callerHeaders.containsHeader(headerName)) {
                 LOG.debug("incoming header '{}' with value(s) '{}'", headerName, String.join(",", callerHeaders.get(headerName)));
             }else{
                 LOG.debug("incoming header '{}' without value", headerName);
@@ -582,7 +584,7 @@ public class AcmeApiImpl implements AcmeApiDelegate {
     private HttpHeaders filterResponseHttpHeaders(ResponseEntity responseEntity) {
         HttpHeaders responseHeaders = responseEntity.getHeaders();
         HttpHeaders relevantHeaders = new HttpHeaders();
-        for( String headerName: responseHeaders.keySet()){
+        for( String headerName: responseHeaders.toSingleValueMap().keySet()){
             if( forwardResponseHeaderSet.contains(headerName.toLowerCase())){
                 List<String> headerList = responseHeaders.get(headerName);
                 if( headerList == null){
@@ -596,6 +598,30 @@ public class AcmeApiImpl implements AcmeApiDelegate {
         }
         return relevantHeaders;
     }
+
+/*
+    private
+    MultiValueMap<java.lang.String,java.lang.String> filterResponseHttpHeaders(ResponseEntity responseEntity) {
+        HttpHeaders responseHeaders = responseEntity.getHeaders();
+
+//        HttpHeaders relevantHeaders = new HttpHeaders();
+
+        MultiValueMap<java.lang.String, java.lang.String> relevantHeaderMVMap = new LinkedMultiValueMap<>();
+        for( String headerName: responseHeaders.toSingleValueMap().keySet()){
+            if( forwardResponseHeaderSet.contains(headerName.toLowerCase())){
+                List<String> headerList = responseHeaders.get(headerName);
+                if( headerList == null){
+                    headerList = new ArrayList<>();
+                }
+                if( LOG.isDebugEnabled()) {
+                    LOG.debug("explicitly forwarding header '{}' with value '{}'", headerName, String.join(",", headerList));
+                }
+                relevantHeaderMVMap.addAll(headerName, headerList);
+            }
+        }
+        return relevantHeaderMVMap;
+    }
+*/
 
     void checkRealm(final String realm, final String resourceUrl) {
         RemoteRequestProxyConfigView remoteRequestProxyConfigView = requestProxyConfig.getConfig();

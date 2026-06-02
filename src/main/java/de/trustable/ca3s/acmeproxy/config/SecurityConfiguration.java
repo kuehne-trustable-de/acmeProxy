@@ -2,19 +2,16 @@ package de.trustable.ca3s.acmeproxy.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
-import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
-@Import(SecurityProblemSupport.class)
 public class SecurityConfiguration {
 /*
     private final SecurityProblemSupport problemSupport;
@@ -24,14 +21,11 @@ public class SecurityConfiguration {
     }
 */
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) {
         // @formatter:off
         http
             .csrf(csrf -> csrf
                 .disable())
-  //          .exceptionHandling(handling -> handling
-  //              .authenticationEntryPoint(problemSupport)
-  //              .accessDeniedHandler(problemSupport))
             .headers(headers -> headers
                 .contentSecurityPolicy(policy -> policy
                     .policyDirectives("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:"))
