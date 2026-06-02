@@ -868,7 +868,6 @@
 					<artifactId>dependency-check-maven</artifactId>
 					<version>${dependencyCheck.version}</version>
 					<configuration>
-						<cveValidForHours>12</cveValidForHours>
 						<failBuildOnCVSS>4</failBuildOnCVSS>
 						<outputDirectory>${project.build.directory}/dependency-check</outputDirectory>
 						<format>HTML</format>
