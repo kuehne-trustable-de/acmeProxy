@@ -8,11 +8,11 @@
 
     <groupId>de.trustable.ca3s.acmeproxy</groupId>
     <artifactId>ca-3-s-acme-proxy</artifactId>
-    <version>1.0.10</version>
+    <version>1.0.11</version>
     <packaging>jar</packaging>
 
     <name>Ca 3 S Acme Proxy</name>
-    <description>ACME proxy handling incoming request and challanges in a separate network</description>
+    <description>ACME proxy handling incoming request and challenges in a separate network</description>
     <url>https://github.com/kuehne-trustable-de/acmeProxy/</url>
 
 	<licenses>
@@ -57,7 +57,7 @@
     <properties>
         <!-- Build properties -->
         <maven.version>3.3.9</maven.version>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
@@ -109,8 +109,8 @@
 
         <!-- jhipster-needle-maven-property -->
 
-        <acmeChallengeHandler.version>1.0.4</acmeChallengeHandler.version>
-        <bouncyCastle.version>1.82</bouncyCastle.version>
+        <acmeChallengeHandler.version>1.0.5</acmeChallengeHandler.version>
+        <bouncyCastle.version>1.84</bouncyCastle.version>
         <nimbus-jose-jwt-version>10.9</nimbus-jose-jwt-version>
 
         <maven-checkstyle.version>3.2.2</maven-checkstyle.version>
@@ -121,6 +121,15 @@
 
         <dependencyCheck.version>12.1.8</dependencyCheck.version>
         <dependencyCheck.skip>false</dependencyCheck.skip>
+
+        <jacoco.utReportFolder>${project.build.directory}/jacoco/test</jacoco.utReportFolder>
+        <jacoco.utReportFile>${jacoco.utReportFolder}/test.exec</jacoco.utReportFile>
+        <jacoco.itReportFolder>${project.build.directory}/jacoco/integrationTest</jacoco.itReportFolder>
+        <jacoco.itReportFile>${jacoco.itReportFolder}/integrationTest.exec</jacoco.itReportFile>
+        <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
+        <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
+
+        <maven.autoPublish>true</maven.autoPublish>
 
     </properties>
 
@@ -205,12 +214,13 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.8.0</version>
+            <version>1.6.15</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+            <version>3.18.0</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -456,6 +466,18 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.10.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>${maven.autoPublish}</autoPublish>
+                </configuration>
+            </plugin>
+
+
         </plugins>
         <pluginManagement>
             <plugins>
