@@ -499,10 +499,6 @@ components:
     DirectoryResponse:
       type: object
       properties:
-        revokeUri:
-          type: string
-          format: uri
-          writeOnly: true
         newNonce:
           type: string
           format: uri
