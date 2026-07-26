@@ -181,7 +181,7 @@ public class ChallengeScheduler {
                 LOG.warn("problem creating JWS for validation payload", e);
             }
         } catch (Throwable th) {
-            LOG.warn("unexpected exception in challange processing", th);
+            LOG.warn("unexpected exception in challenge processing", th);
         }
         currentChallengeMap.remove(acmeChallenge.getChallengeId());
 
