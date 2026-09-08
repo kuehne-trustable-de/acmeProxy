@@ -43,7 +43,7 @@ jobs:
 #        uses: gradle/wrapper-validation-action@v2
 
       - name: Execute maven build
-        run: ./mvn package -DskipTests
+        run:  chmod +x mvnw && ./mvnw -B -DskipTests package
 
       # debug
       - run: git version
