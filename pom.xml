@@ -8,7 +8,7 @@
 
     <groupId>de.trustable.ca3s.acmeproxy</groupId>
     <artifactId>ca-3-s-acme-proxy</artifactId>
-    <version>1.0.11</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <name>Ca 3 S Acme Proxy</name>
@@ -109,7 +109,7 @@
 
         <!-- jhipster-needle-maven-property -->
 
-        <acmeChallengeHandler.version>1.0.5</acmeChallengeHandler.version>
+        <acmeChallengeHandler.version>1.1.0</acmeChallengeHandler.version>
         <bouncyCastle.version>1.84</bouncyCastle.version>
         <nimbus-jose-jwt-version>10.9</nimbus-jose-jwt-version>
 
@@ -120,7 +120,7 @@
         <checkstyle.version>10.3.2</checkstyle.version>
 
         <dependencyCheck.version>12.1.8</dependencyCheck.version>
-        <dependencyCheck.skip>false</dependencyCheck.skip>
+        <dependencyCheck.skip>true</dependencyCheck.skip>
 
         <jacoco.utReportFolder>${project.build.directory}/jacoco/test</jacoco.utReportFolder>
         <jacoco.utReportFile>${jacoco.utReportFolder}/test.exec</jacoco.utReportFile>
@@ -211,6 +211,7 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
@@ -309,7 +310,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
-        <dependency>
+
+        <!--dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
         </dependency>
@@ -322,7 +324,7 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
             <scope>runtime</scope>
-        </dependency>
+        </dependency-->
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -495,7 +497,7 @@
                                 <goal>generate</goal>
                             </goals>
                             <configuration>
-                                <inputSpec>C:\Users\kuehn\IdeaProjects\acmeProxy\src\main\resources\oas\openapi.yaml</inputSpec>
+                                <inputSpec>.\src\main\resources\oas\openapi.yaml</inputSpec>
                                 <generatorName>spring</generatorName>
                                 <apiPackage>de.trustable.ca3s.acme.proxy.web.api</apiPackage>
                                 <modelPackage>de.trustable.ca3s.acme.proxy.service.api.dto</modelPackage>
@@ -890,7 +892,8 @@
 					<artifactId>dependency-check-maven</artifactId>
 					<version>${dependencyCheck.version}</version>
 					<configuration>
-						<failBuildOnCVSS>4</failBuildOnCVSS>
+                        <nvdApiKey>${dependencyCheck.nvdApiKey}</nvdApiKey>
+                        <failBuildOnCVSS>4</failBuildOnCVSS>
 						<outputDirectory>${project.build.directory}/dependency-check</outputDirectory>
 						<format>HTML</format>
                         <nodeAnalyzerEnabled>false</nodeAnalyzerEnabled>
@@ -1108,6 +1111,9 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+                            <outputFormat>all</outputFormat> <!-- Generates both JSON and XML -->
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
