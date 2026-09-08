@@ -138,6 +138,8 @@ public class ChallengeScheduler {
             } else {
                 LOG.warn("problem retrieving pending challenges: {}", httpClientErrorException.getMessage());
             }
+        } catch (Throwable th) {
+            LOG.warn("unexpected exception while retrieving pending challenges", th);
         }
     }
 
@@ -181,7 +183,7 @@ public class ChallengeScheduler {
                 LOG.warn("problem creating JWS for validation payload", e);
             }
         } catch (Throwable th) {
-            LOG.warn("unexpected exception in challange processing", th);
+            LOG.warn("unexpected exception in challenge processing", th);
         }
         currentChallengeMap.remove(acmeChallenge.getChallengeId());
 
@@ -195,6 +197,9 @@ public class ChallengeScheduler {
                 break;
             case AcmeChallenge.CHALLENGE_TYPE_DNS_01:
                 challengeResponses.addAll(challengeValidator.retrieveChallengeDNS(acmeChallenge.getValue()));
+                break;
+            case AcmeChallenge.CHALLENGE_TYPE_DNS_PRSIST_01:
+                challengeResponses.addAll(challengeValidator.retrieveChallengeDNSPersist(acmeChallenge.getValue()));
                 break;
             case AcmeChallenge.CHALLENGE_TYPE_ALPN_01:
                 challengeResponses.add(challengeValidator.retrieveChallengeALPN(acmeChallenge.getValue()));
