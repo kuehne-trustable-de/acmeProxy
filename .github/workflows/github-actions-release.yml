@@ -39,9 +39,7 @@ jobs:
           distribution: adopt
 #          cache: gradle
 
-#      - name: Validate Gradle wrapper matches official SHA-256 checksums for security
-#        uses: gradle/wrapper-validation-action@v2
-
+      # start the maven build using the wrapper script, which will download the correct maven version and execute the build
       - name: Execute maven build
         run:  chmod +x mvnw && ./mvnw -B -DskipTests package
 
