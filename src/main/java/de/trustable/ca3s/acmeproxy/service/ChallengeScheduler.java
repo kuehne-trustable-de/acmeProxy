@@ -21,11 +21,8 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.security.GeneralSecurityException;
-import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
@@ -44,7 +41,6 @@ public class ChallengeScheduler {
     private final JWSService jwsService;
     private final ObjectMapper objectMapper;
     private final ThreadPoolExecutor executor;
-    private final Map<Long, Instant> currentChallengeMap = new HashMap<>();
 
     public ChallengeScheduler(@Value("${acme.proxy.remote.server:http://localhost:8080}") String remoteAcmeServer,
                               RequestProxyConfig requestProxyConfig,
@@ -55,6 +51,7 @@ public class ChallengeScheduler {
                               @Value("${acme.challenge.http.maxRedirects:0}") int maxRedirects,
                               @Value("${acme.challenge.https.ports:443}") int[] httpsPorts,
                               @Value("${acme.challenge.threads:4}") int nWorkerThreads,
+                              @Value("${acme.challenge.queue:SYNCHRONOUS}") String queueType,
                               JWSService jwsService,
                               ObjectMapper objectMapper) {
         this.remoteAcmeServer = remoteAcmeServer;
@@ -62,9 +59,19 @@ public class ChallengeScheduler {
         this.jwsService = jwsService;
         this.objectMapper = objectMapper;
 
-        this.executor =(ThreadPoolExecutor) Executors.newFixedThreadPool(nWorkerThreads);
+        if("SYNCHRONOUS".equals(queueType)) {
+            LOG.info("using synchronous queue for challenge processing");
+            this.executor = new ThreadPoolExecutor(nWorkerThreads,
+                nWorkerThreads,
+                100,
+                TimeUnit.SECONDS,
+                new SynchronousQueue<>());
+        }else {
+            LOG.info("using asynchronous queue for challenge processing");
+            this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(nWorkerThreads);
+        }
 
-        challengeValidator = new ChallengeValidator(resolverHost,
+            challengeValidator = new ChallengeValidator(resolverHost,
             resolverPort,
             timeoutMilliSec,
             httpPorts,
@@ -112,17 +119,13 @@ public class ChallengeScheduler {
                 for (AcmeChallenge acmeChallenge : acmeChallenges) {
                     LOG.debug("pending challenge request relevant for this proxy: {}", acmeChallenge);
 
-                    if( currentChallengeMap.containsKey(acmeChallenge.getChallengeId())){
-                        LOG.debug("challenge #{} being processed, currently", acmeChallenge.getChallengeId() );
-                    }else{
-                        try {
-                            executor.submit(() -> {
-                                LOG.debug("challenge #{} in processing thread", acmeChallenge.getChallengeId());
-                                processChallenge(resourceUrlValidation, remoteRequestProxyConfigView, acmeChallenge);
-                            });
-                        }catch( RejectedExecutionException rejectedExecutionException){
-                            LOG.info("too many challenges ...", rejectedExecutionException );
-                        }
+                    try {
+                        executor.submit(() -> {
+                            LOG.debug("challenge #{} in processing thread", acmeChallenge.getChallengeId());
+                            processChallenge(resourceUrlValidation, remoteRequestProxyConfigView, acmeChallenge);
+                        });
+                    }catch( RejectedExecutionException rejectedExecutionException){
+                        LOG.info("too many concurrent challenges ...", rejectedExecutionException );
                     }
                 }
             }
@@ -185,7 +188,6 @@ public class ChallengeScheduler {
         } catch (Throwable th) {
             LOG.warn("unexpected exception in challenge processing", th);
         }
-        currentChallengeMap.remove(acmeChallenge.getChallengeId());
 
     }
 
