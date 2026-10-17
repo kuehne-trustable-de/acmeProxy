@@ -111,7 +111,7 @@
 
         <acmeChallengeHandler.version>1.1.2</acmeChallengeHandler.version>
         <bouncyCastle.version>1.86</bouncyCastle.version>
-        <nimbus-jose-jwt-version>10.9.1</nimbus-jose-jwt-version>
+        <nimbus-jose-jwt-version>10.10</nimbus-jose-jwt-version>
 
         <maven-checkstyle.version>3.2.2</maven-checkstyle.version>
         <maven-source.version>3.4.0</maven-source.version>
