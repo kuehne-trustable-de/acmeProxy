@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "generator-jhipster": "7.9.3",
-    "husky": "7.0.4",
+    "husky": "9.1.7",
     "lint-staged": "13.3.0",
     "prettier": "2.7.1",
     "prettier-plugin-java": "2.7.5",
